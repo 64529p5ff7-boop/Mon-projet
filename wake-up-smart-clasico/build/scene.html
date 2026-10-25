@@ -125,7 +125,10 @@ function captions(t){
   const s=TL.segs.find(s=>t>=s.start&&t<s.start+s.dur+.25);if(!s)return;
   const words=s.cap.split(' '),wt=words.map(w=>w.replace(/[^\p{L}\p{N}]/gu,'').length+2),sum=wt.reduce((a,b)=>a+b,0);
   const chunks=[];let cur=[],cl_=0;words.forEach((w,i)=>{cur.push(i);cl_+=w.length+1;if(cl_>18||/[.,:?…]$/.test(w)||i===words.length-1){chunks.push(cur);cur=[];cl_=0;}});
-  const u=cl((t-s.start)/s.dur,0,.999);let acc=0,wi=0;for(let i=0;i<words.length;i++){acc+=wt[i]/sum;if(u<acc){wi=i;break;}wi=i;}
+  // progression sur le temps de parole seulement (les pauses de la voix figent le mot actif)
+  const P=s.parts||[[s.start,s.start+s.dur]],tot=P.reduce((a,p)=>a+p[1]-p[0],0);
+  let el=0;for(const p of P)el+=cl(t-p[0],0,p[1]-p[0]);
+  const u=cl(el/tot,0,.999);let acc=0,wi=0;for(let i=0;i<words.length;i++){acc+=wt[i]/sum;if(u<acc){wi=i;break;}wi=i;}
   const ch=chunks.find(c=>c.includes(wi));const y=1480;
   g.font=F(900,66);const sp=g.measureText(' ').width;const ws=ch.map(i=>words[i].toUpperCase());const tw=ws.reduce((a,w)=>a+g.measureText(w).width,0)+sp*(ws.length-1);
   let x=W/2-tw/2;const pop=ease((t-(s.start+(ch[0]?wt.slice(0,ch[0]).reduce((a,b)=>a+b,0)/sum*s.dur:0)))/.12);
