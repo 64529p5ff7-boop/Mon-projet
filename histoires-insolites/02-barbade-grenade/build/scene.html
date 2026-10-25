@@ -61,13 +61,16 @@ function board(b,gr,t,{prevB=b,prevG=gr,at=0,minute=null,a=1}={}){if(a<=0)return
 
 const SCENE={label:'HISTOIRE INSOLITE #2',
  init(){const s=id=>TL.segs.find(x=>x.id===id);const st=id=>s(id).start,du=id=>s(id).dur;
-  T={own1:st('s1')+1.7,own2:st('s1')+du('s1')*.62,g21:st('s4')+du('s4')*.52,own87:st('s6')+du('s6')*.36,gold:st('s9')+du('s9')*.42};},
+  const P=(id,i,k=0)=>{const x=s(id);return x.parts?x.parts[i][k]:null;};
+  // moments clés calés sur la voix (morceaux de parole) quand elle existe
+  T={own1:st('s1')+1.7,own2:P('s1',1,1)??st('s1')+du('s1')*.62,g21:(P('s4',2,1)??st('s4')+du('s4')*.52+.4)-.4,own87:P('s6',2,0)??st('s6')+du('s6')*.36,
+     gold:(P('s9',1,1)??st('s9')+du('s9')*.42+.3)-.3,elim:P('s4',4,0)??st('s4')+du('s4')*.68};},
  cam(t){const s=id=>TL.segs.find(x=>x.id===id).start;
   return camera([[0,1,W/2,900],[s('s6'),1.0,W/2,900],[s('s6')+.6,1.32,PCX,PY1-120],[T.own87+1.1,1,W/2,900],[s('s9'),1,W/2,900],[s('s9')+.3,1.25,PCX,PY0+140],[T.gold+.9,1,W/2,900]],t);},
  sfx(){const ev=[];TL.segs.forEach((s,i)=>{if(i)ev.push([s.start-.12,'whoosh']);});
   for(const k of ['own1','own2','g21','own87','gold'])ev.push([T[k],'thump'],[T[k]-.9,'kick']);
   const s=id=>TL.segs.find(x=>x.id===id),at=(id,f)=>s(id).start+s(id).dur*f;
-  ev.push([at('s1',.3),'stamp'],[at('s3',.55),'stamp'],[at('s4',.7),'stamp'],[at('s6',.5),'stamp'],[at('s9',.62),'stamp']);
+  ev.push([at('s1',.3),'stamp'],[at('s3',.55),'stamp'],[T.elim,'stamp'],[at('s6',.5),'stamp'],[at('s9',.62),'stamp']);
   for(let i=0;i<7;i++)ev.push([s('s5').start+.3+i*.35,'tick']);
   ev.push([at('s2',.1),'pop'],[at('s2',.62),'pop'],[at('s5',.62),'pop'],[at('s7',.35),'pop'],[at('s7',.65),'pop'],[at('s10',.15),'pop'],[s('s11').start+1,'pop']);
   return ev;},
@@ -114,7 +117,7 @@ const SCENE={label:'HISTOIRE INSOLITE #2',
   for(let i=0;i<3;i++)player(lerp(PCX-160+i*130,PCX-90+i*90,u),lerp(PCY-60,PY1-170,u)+i*24,GRN,1,24,[7,9,11][i]);
   for(let i=0;i<3;i++)player(PCX-180+i*180,lerp(PCY+120,PY1-110,u),BAR,1,24,[2,4,5][i]);
   ball(lerp(PCX-90,PCX+20,u),lerp(PCY-20,PY1+14,u),20,u*10);
-    stamp('BARBADE ÉLIMINÉE',W/2,1450,C.red,-.04,lt-d*.68,52);
+    stamp('BARBADE ÉLIMINÉE',W/2,1450,C.red,-.04,t-T.elim,52);
  },
  s5(lt,d,t){
   chip("83' · LE PROBLÈME",1);
