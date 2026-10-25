@@ -1,0 +1,75 @@
+{
+ "total": 71.07,
+ "segs": [
+  {
+   "id": "s1",
+   "say": "Ce poulet a vécu dix-huit mois… sans tête. Et c'est une histoire vraie.",
+   "cap": "Ce poulet a vécu 18 mois… sans tête. Et c'est une histoire vraie.",
+   "dur": 3.185,
+   "start": 0.4
+  },
+  {
+   "id": "s2",
+   "say": "Dix septembre mille neuf cent quarante-cinq. Dans une ferme du Colorado, Lloyd Olsen prépare le dîner. Au menu : un jeune coq nommé Mike.",
+   "cap": "10 septembre 1945. Dans une ferme du Colorado, Lloyd Olsen prépare le dîner. Au menu : un jeune coq nommé Mike.",
+   "dur": 7.987,
+   "start": 4.035
+  },
+  {
+   "id": "s3",
+   "say": "Un coup de hache. Mais Mike… se relève. Et il repart picorer, comme si de rien n'était.",
+   "cap": "Un coup de hache. Mais Mike… se relève. Et il repart picorer, comme si de rien n'était.",
+   "dur": 4.735,
+   "start": 12.472
+  },
+  {
+   "id": "s4",
+   "say": "Le lendemain matin, Olsen le retrouve endormi… la tête sous l'aile. Enfin, ce qu'il en reste.",
+   "cap": "Le lendemain matin, Olsen le retrouve endormi… la tête sous l'aile. Enfin, ce qu'il en reste.",
+   "dur": 4.623,
+   "start": 17.657
+  },
+  {
+   "id": "s5",
+   "say": "L'explication ? La hache a raté la veine jugulaire. Un caillot a stoppé le saignement. Et la base du cerveau, celle qui gère le cœur et la respiration, est restée intacte.",
+   "cap": "L'explication ? La hache a raté la veine jugulaire. Un caillot a stoppé le saignement. Et la base du cerveau, celle qui gère le cœur et la respiration, est restée intacte.",
+   "dur": 9.029,
+   "start": 22.73
+  },
+  {
+   "id": "s6",
+   "say": "Alors Olsen le nourrit à la pipette : de l'eau, du lait, des petits grains de maïs. Directement dans le gosier.",
+   "cap": "Alors Olsen le nourrit à la pipette : de l'eau, du lait, des petits grains de maïs. Directement dans le gosier.",
+   "dur": 5.282,
+   "start": 32.209
+  },
+  {
+   "id": "s7",
+   "say": "Mike devient une star. Le magazine Life parle de lui. Il part en tournée à travers les États-Unis. Vingt-cinq cents pour le voir. Il est assuré dix mille dollars.",
+   "cap": "Mike devient une star. Le magazine Life parle de lui. Il part en tournée à travers les États-Unis. 25 cents pour le voir. Il est assuré 10 000 dollars.",
+   "dur": 9.461,
+   "start": 37.941
+  },
+  {
+   "id": "s8",
+   "say": "Mais en mars mille neuf cent quarante-sept, dans un motel de Phoenix, Mike s'étouffe en pleine nuit. La seringue qui servait à le dégager… avait été oubliée la veille.",
+   "cap": "Mais en mars 1947, dans un motel de Phoenix, Mike s'étouffe en pleine nuit. La seringue qui servait à le dégager… avait été oubliée la veille.",
+   "dur": 8.892,
+   "start": 47.852
+  },
+  {
+   "id": "s9",
+   "say": "Dix-huit mois sans tête. Un record du monde. Et aujourd'hui encore, sa ville du Colorado organise chaque année un festival en son honneur.",
+   "cap": "18 mois sans tête. Un record du monde. Et aujourd'hui encore, sa ville du Colorado organise chaque année un festival en son honneur.",
+   "dur": 7.212,
+   "start": 57.194
+  },
+  {
+   "id": "s10",
+   "say": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
+   "cap": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
+   "dur": 4.614,
+   "start": 64.856
+  }
+ ]
+}
