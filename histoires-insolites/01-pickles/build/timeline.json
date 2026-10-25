@@ -1,0 +1,82 @@
+{
+ "total": 83.665,
+ "segs": [
+  {
+   "id": "s1",
+   "say": "En mille neuf cent soixante-six, la Coupe du monde a été volée. Et c'est un chien qui l'a retrouvée.",
+   "cap": "En 1966, la Coupe du monde a été volée. Et c'est un chien qui l'a retrouvée.",
+   "dur": 5.446,
+   "start": 0.5
+  },
+  {
+   "id": "s2",
+   "say": "Mars soixante-six. Quatre mois avant le Mondial en Angleterre, le trophée Jules Rimet est exposé à Londres… au milieu d'une expo de timbres.",
+   "cap": "Mars 66. Quatre mois avant le Mondial en Angleterre, le trophée Jules Rimet est exposé à Londres… au milieu d'une expo de timbres.",
+   "dur": 8.463,
+   "start": 6.246
+  },
+  {
+   "id": "s3",
+   "say": "Un dimanche, la vitrine est forcée. Le trophée disparaît. Les timbres valaient pourtant bien plus cher… personne n'y a touché.",
+   "cap": "Un dimanche, la vitrine est forcée. Le trophée disparaît. Les timbres valaient pourtant bien plus cher… personne n'y a touché.",
+   "dur": 7.144,
+   "start": 15.009
+  },
+  {
+   "id": "s4",
+   "say": "Panique. Le patron du foot anglais reçoit une demande de rançon : quinze mille livres. Scotland Yard tend un piège et arrête un homme. Mais toujours pas de Coupe.",
+   "cap": "Panique. Le patron du foot anglais reçoit une demande de rançon : 15 000 livres. Scotland Yard tend un piège et arrête un homme. Mais toujours pas de Coupe.",
+   "dur": 10.326,
+   "start": 22.453
+  },
+  {
+   "id": "s5",
+   "say": "Une semaine après le vol, dans le sud de Londres, David Corbett sort promener son chien. Il s'appelle Pickles.",
+   "cap": "Une semaine après le vol, dans le sud de Londres, David Corbett sort promener son chien. Il s'appelle Pickles.",
+   "dur": 6.532,
+   "start": 33.079
+  },
+  {
+   "id": "s6",
+   "say": "Pickles renifle un paquet emballé dans du papier journal, au pied d'une haie. David l'ouvre… et tombe sur la Coupe du monde.",
+   "cap": "Pickles renifle un paquet emballé dans du papier journal, au pied d'une haie. David l'ouvre… et tombe sur la Coupe du monde.",
+   "dur": 6.873,
+   "start": 39.911
+  },
+  {
+   "id": "s7",
+   "say": "Petit détail : la police le soupçonne d'abord, lui. Avant de comprendre qu'il est juste le maître du héros.",
+   "cap": "Petit détail : la police le soupçonne d'abord, lui. Avant de comprendre qu'il est juste le maître du héros.",
+   "dur": 5.963,
+   "start": 47.084
+  },
+  {
+   "id": "s8",
+   "say": "Quatre mois plus tard, l'Angleterre gagne son Mondial. Pickles est invité au banquet des champions. Médaille, récompense, et même un rôle au cinéma.",
+   "cap": "Quatre mois plus tard, l'Angleterre gagne son Mondial. Pickles est invité au banquet des champions. Médaille, récompense, et même un rôle au cinéma.",
+   "dur": 8.535,
+   "start": 53.347
+  },
+  {
+   "id": "s9",
+   "say": "Mais l'histoire du trophée ne s'arrête pas là. Le Brésil le gagne pour de bon en mille neuf cent soixante-dix. Et en quatre-vingt-trois, à Rio… il est volé une deuxième fois.",
+   "cap": "Mais l'histoire du trophée ne s'arrête pas là. Le Brésil le gagne pour de bon en 1970. Et en 83, à Rio… il est volé une deuxième fois.",
+   "dur": 9.822,
+   "start": 62.182
+  },
+  {
+   "id": "s10",
+   "say": "Cette fois, pas de Pickles. Le trophée aurait été fondu. On ne l'a jamais revu.",
+   "cap": "Cette fois, pas de Pickles. Le trophée aurait été fondu. On ne l'a jamais revu.",
+   "dur": 4.301,
+   "start": 72.304
+  },
+  {
+   "id": "s11",
+   "say": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
+   "cap": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
+   "dur": 5.26,
+   "start": 76.905
+  }
+ ]
+}
