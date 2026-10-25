@@ -1,75 +1,235 @@
 {
- "total": 71.07,
+ "total": 75.76,
  "segs": [
   {
    "id": "s1",
    "say": "Ce poulet a vécu dix-huit mois… sans tête. Et c'est une histoire vraie.",
    "cap": "Ce poulet a vécu 18 mois… sans tête. Et c'est une histoire vraie.",
-   "dur": 3.185,
-   "start": 0.4
+   "dur": 4.388,
+   "start": 0.4,
+   "parts": [
+    [
+     0.4,
+     2.179
+    ],
+    [
+     2.641,
+     3.202
+    ],
+    [
+     3.642,
+     4.788
+    ]
+   ]
   },
   {
    "id": "s2",
    "say": "Dix septembre mille neuf cent quarante-cinq. Dans une ferme du Colorado, Lloyd Olsen prépare le dîner. Au menu : un jeune coq nommé Mike.",
    "cap": "10 septembre 1945. Dans une ferme du Colorado, Lloyd Olsen prépare le dîner. Au menu : un jeune coq nommé Mike.",
-   "dur": 7.987,
-   "start": 4.035
+   "dur": 8.522,
+   "start": 5.601,
+   "parts": [
+    [
+     5.601,
+     7.704
+    ],
+    [
+     8.164,
+     11.3
+    ],
+    [
+     11.737,
+     12.186
+    ],
+    [
+     12.512,
+     14.123
+    ]
+   ]
   },
   {
    "id": "s3",
    "say": "Un coup de hache. Mais Mike… se relève. Et il repart picorer, comme si de rien n'était.",
    "cap": "Un coup de hache. Mais Mike… se relève. Et il repart picorer, comme si de rien n'était.",
-   "dur": 4.735,
-   "start": 12.472
+   "dur": 5.373,
+   "start": 14.562,
+   "parts": [
+    [
+     14.562,
+     15.246
+    ],
+    [
+     15.739,
+     16.434
+    ],
+    [
+     16.791,
+     17.483
+    ],
+    [
+     17.893,
+     19.935
+    ]
+   ]
   },
   {
    "id": "s4",
    "say": "Le lendemain matin, Olsen le retrouve endormi… la tête sous l'aile. Enfin, ce qu'il en reste.",
    "cap": "Le lendemain matin, Olsen le retrouve endormi… la tête sous l'aile. Enfin, ce qu'il en reste.",
-   "dur": 4.623,
-   "start": 17.657
+   "dur": 5.471,
+   "start": 20.443,
+   "parts": [
+    [
+     20.443,
+     22.926
+    ],
+    [
+     23.259,
+     24.184
+    ],
+    [
+     24.559,
+     24.941
+    ],
+    [
+     25.22,
+     25.914
+    ]
+   ]
   },
   {
    "id": "s5",
    "say": "L'explication ? La hache a raté la veine jugulaire. Un caillot a stoppé le saignement. Et la base du cerveau, celle qui gère le cœur et la respiration, est restée intacte.",
    "cap": "L'explication ? La hache a raté la veine jugulaire. Un caillot a stoppé le saignement. Et la base du cerveau, celle qui gère le cœur et la respiration, est restée intacte.",
-   "dur": 9.029,
-   "start": 22.73
+   "dur": 9.424,
+   "start": 26.418,
+   "parts": [
+    [
+     26.418,
+     27.108
+    ],
+    [
+     27.492,
+     29.384
+    ],
+    [
+     29.689,
+     31.211
+    ],
+    [
+     31.549,
+     35.842
+    ]
+   ]
   },
   {
    "id": "s6",
    "say": "Alors Olsen le nourrit à la pipette : de l'eau, du lait, des petits grains de maïs. Directement dans le gosier.",
    "cap": "Alors Olsen le nourrit à la pipette : de l'eau, du lait, des petits grains de maïs. Directement dans le gosier.",
-   "dur": 5.282,
-   "start": 32.209
+   "dur": 6.054,
+   "start": 36.282,
+   "parts": [
+    [
+     36.282,
+     38.047
+    ],
+    [
+     38.357,
+     40.839
+    ],
+    [
+     41.166,
+     42.336
+    ]
+   ]
   },
   {
    "id": "s7",
    "say": "Mike devient une star. Le magazine Life parle de lui. Il part en tournée à travers les États-Unis. Vingt-cinq cents pour le voir. Il est assuré dix mille dollars.",
    "cap": "Mike devient une star. Le magazine Life parle de lui. Il part en tournée à travers les États-Unis. 25 cents pour le voir. Il est assuré 10 000 dollars.",
-   "dur": 9.461,
-   "start": 37.941
+   "dur": 8.963,
+   "start": 42.808,
+   "parts": [
+    [
+     42.808,
+     44.363
+    ],
+    [
+     44.634,
+     46.153
+    ],
+    [
+     46.392,
+     49.982
+    ],
+    [
+     50.253,
+     51.771
+    ]
+   ]
   },
   {
    "id": "s8",
    "say": "Mais en mars mille neuf cent quarante-sept, dans un motel de Phoenix, Mike s'étouffe en pleine nuit. La seringue qui servait à le dégager… avait été oubliée la veille.",
    "cap": "Mais en mars 1947, dans un motel de Phoenix, Mike s'étouffe en pleine nuit. La seringue qui servait à le dégager… avait été oubliée la veille.",
-   "dur": 8.892,
-   "start": 47.852
+   "dur": 8.533,
+   "start": 52.206,
+   "parts": [
+    [
+     52.206,
+     55.227
+    ],
+    [
+     55.527,
+     56.933
+    ],
+    [
+     57.412,
+     59.261
+    ],
+    [
+     59.582,
+     60.739
+    ]
+   ]
   },
   {
    "id": "s9",
    "say": "Dix-huit mois sans tête. Un record du monde. Et aujourd'hui encore, sa ville du Colorado organise chaque année un festival en son honneur.",
    "cap": "18 mois sans tête. Un record du monde. Et aujourd'hui encore, sa ville du Colorado organise chaque année un festival en son honneur.",
-   "dur": 7.212,
-   "start": 57.194
+   "dur": 7.813,
+   "start": 61.42,
+   "parts": [
+    [
+     61.42,
+     62.78
+    ],
+    [
+     63.125,
+     64.123
+    ],
+    [
+     64.419,
+     69.233
+    ]
+   ]
   },
   {
    "id": "s10",
    "say": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
    "cap": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
-   "dur": 4.614,
-   "start": 64.856
+   "dur": 4.346,
+   "start": 69.814,
+   "parts": [
+    [
+     69.814,
+     71.124
+    ],
+    [
+     71.399,
+     74.16
+    ]
+   ]
   }
  ]
 }

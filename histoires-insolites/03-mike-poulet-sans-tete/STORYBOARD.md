@@ -2,7 +2,7 @@
 
 Durée : environ 1 min 10. Charte Wake up smart. Style cartoon sans gore : après la hache, le cou du poulet se termine par un simple capuchon rosé.
 
-Aperçu : `mike-apercu-voix-temporaire.mp4` (voix de synthèse provisoire, à remplacer par la voix ElevenLabs).
+Vidéo finale : `mike.mp4` (voix ElevenLabs Yann, 1 min 16).
 
 ## Storyboard
 
@@ -29,5 +29,5 @@ Le texte à coller dans ElevenLabs est dans `VOIX-OFF.txt`.
 ## Fabrication
 
 1. `build/tts.py` + `build/timeline_tts.py` : voix provisoire (Kokoro) et timeline de l'aperçu.
-2. Quand la voix ElevenLabs est là : détection des silences + transcription (`asr.py` de l'épisode 2), puis un `sync.py` qui regroupe les morceaux de parole par plan, comme pour l'épisode 2. L'impact de la hache se cale tout seul sur la fin de « Un coup de hache. ».
-3. `node render.js sfx`, puis `python3 ../../core/audio.py timeline.json sfx.json mix.wav voix.wav 0`, puis `OUT=../mike.mp4 node render.js full`.
+2. Voix ElevenLabs : `voix-elevenlabs.mp3` → `voix.wav` (44,1 kHz), silences dans `sil.txt` (ffmpeg silencedetect), puis `sync.py` regroupe les morceaux de parole par plan. L'impact de la hache se cale sur la fin de « Un coup de hache. ».
+3. `node render.js sfx`, puis `python3 ../../core/audio.py timeline.json sfx.json mix.wav voix.wav 0.4`, puis `OUT=../mike.mp4 node render.js full`.
