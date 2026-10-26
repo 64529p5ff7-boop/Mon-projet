@@ -1,0 +1,181 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../core/core.js"></script>
+<script>
+// Histoire insolite #2 : Barbade – Grenade 1994, le but contre son camp volontaire.
+// Terrain vu de dessus : but de la Grenade en haut, but de la Barbade en bas.
+const PX0=190,PX1=890,PY0=640,PY1=1300,PCX=(PX0+PX1)/2,PCY=(PY0+PY1)/2;
+const BAR='#2F6BFF',GRN='#F2C230';
+let T={};   // instants absolus des moments clés, calculés dans init()
+
+function flagBB(x,y,w,h,a=1){if(a<=0)return;g.save();g.globalAlpha=a;rr(x-w/2,y-h/2,w,h,10);g.clip();
+  g.fillStyle='#00267F';g.fillRect(x-w/2,y-h/2,w,h);g.fillStyle='#FFC726';g.fillRect(x-w/6,y-h/2,w/3,h);
+  g.strokeStyle='#111';g.fillStyle='#111';g.lineWidth=w*.022;g.lineCap='round';const s=h*.32;
+  g.beginPath();g.moveTo(x,y+s);g.lineTo(x,y-s);g.stroke();
+  g.beginPath();g.moveTo(x-s*.55,y-s*.8);g.quadraticCurveTo(x-s*.5,y,x,y);g.quadraticCurveTo(x+s*.5,y,x+s*.55,y-s*.8);g.stroke();
+  for(const dx of [-s*.55,0,s*.55]){g.beginPath();g.moveTo(dx+x-s*.12,y-s*(dx===0?1:.8)+s*.15);g.lineTo(dx+x,y-s*(dx===0?1.15:.95));g.lineTo(dx+x+s*.12,y-s*(dx===0?1:.8)+s*.15);g.fill();}
+  g.restore();}
+function star(x,y,r,col){g.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr_=i%2?r*.42:r;g.lineTo(x+Math.cos(a)*rr_,y+Math.sin(a)*rr_);}g.closePath();g.fillStyle=col;g.fill();}
+function flagGD(x,y,w,h,a=1){if(a<=0)return;g.save();g.globalAlpha=a;rr(x-w/2,y-h/2,w,h,10);g.clip();
+  g.fillStyle='#CE1126';g.fillRect(x-w/2,y-h/2,w,h);const b=h*.14,x0=x-w/2+b,y0=y-h/2+b,x1=x+w/2-b,y1=y+h/2-b;
+  const tri=(p,col)=>{g.beginPath();g.moveTo(...p[0]);g.lineTo(...p[1]);g.lineTo(x,y);g.closePath();g.fillStyle=col;g.fill();};
+  tri([[x0,y0],[x1,y0]],'#FCD116');tri([[x0,y1],[x1,y1]],'#FCD116');tri([[x0,y0],[x0,y1]],'#007A5E');tri([[x1,y0],[x1,y1]],'#007A5E');
+  g.beginPath();g.arc(x,y,h*.16,0,7);g.fillStyle='#CE1126';g.fill();star(x,y,h*.11,'#FCD116');
+  for(let i=0;i<3;i++){star(x-w*.25+i*w*.25,y-h/2+b/2,b*.36,'#FCD116');star(x-w*.25+i*w*.25,y+h/2-b/2,b*.36,'#FCD116');}
+  g.beginPath();g.ellipse(x0+(x-x0)*.35,y,h*.05,h*.08,.4,0,7);g.fillStyle='#E2A33A';g.fill();
+  g.restore();}
+function ball(x,y,r=22,rot=0,a=1,gold=0){if(a<=0)return;if(gold)glow(x,y,r*6,gold);g.save();g.globalAlpha=a;g.translate(x,y);g.rotate(rot);
+  g.beginPath();g.arc(0,0,r,0,7);g.fillStyle='#fff';g.fill();g.save();g.clip();g.fillStyle='#16182A';
+  const pent=(cx,cy,s)=>{g.beginPath();for(let i=0;i<5;i++){const a=-Math.PI/2+i*2*Math.PI/5;g.lineTo(cx+Math.cos(a)*s,cy+Math.sin(a)*s);}g.fill();};
+  pent(0,0,r*.38);for(let i=0;i<5;i++){const a=-Math.PI/2+i*2*Math.PI/5;pent(Math.cos(a)*r*1.02,Math.sin(a)*r*1.02,r*.32);}
+  g.restore();g.lineWidth=2;g.strokeStyle='rgba(0,0,0,.35)';g.beginPath();g.arc(0,0,r,0,7);g.stroke();g.restore();g.globalAlpha=1;}
+function player(x,y,col,a=1,r=24,num){if(a<=0)return;g.globalAlpha=a;g.beginPath();g.arc(x+3,y+5,r,0,7);g.fillStyle='rgba(0,0,0,.3)';g.fill();
+  g.beginPath();g.arc(x,y,r,0,7);g.fillStyle=col;g.fill();g.lineWidth=4;g.strokeStyle='rgba(255,255,255,.9)';g.stroke();
+  if(num)txt(String(num),x,y+9,F(900,24),col===GRN?'#222':'#fff','center',a);g.globalAlpha=1;}
+// filet qui se gonfle quand le ballon entre (tg = instant absolu du but)
+function goal(top,t,tg){const y=top?PY0-34:PY1,h=34;let bulge=0;if(tg!==undefined&&t>tg)bulge=Math.exp(-(t-tg)*4)*Math.sin((t-tg)*18)*10+Math.exp(-(t-tg)*3)*8;
+  g.save();g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=2;
+  for(let i=0;i<=8;i++){const x=PCX-70+i*17.5;g.beginPath();g.moveTo(x,top?PY0:PY1);g.quadraticCurveTo(x,top?y-bulge:y+h+bulge,x,top?y-bulge*.4:y+h+bulge*.4);g.stroke();}
+  for(let j=0;j<=3;j++){const yy=top?PY0-j*h/3-bulge*j/3:PY1+j*h/3+bulge*j/3;g.beginPath();g.moveTo(PCX-70,yy);g.lineTo(PCX+70,yy);g.stroke();}
+  g.lineWidth=7;g.strokeStyle='#fff';g.beginPath();if(top){g.moveTo(PCX-70,PY0);g.lineTo(PCX-70,PY0-h);g.lineTo(PCX+70,PY0-h);g.lineTo(PCX+70,PY0);}else{g.moveTo(PCX-70,PY1);g.lineTo(PCX-70,PY1+h);g.lineTo(PCX+70,PY1+h);g.lineTo(PCX+70,PY1);}g.stroke();
+  if(tg!==undefined&&t>tg){const f=Math.exp(-(t-tg)*5);g.fillStyle=`rgba(255,255,255,${.5*f})`;g.fillRect(PCX-70,top?PY0-h:PY1,140,h);}
+  g.restore();}
+function pitch(t,a=1,gTop,gBot){if(a<=0)return;g.save();g.globalAlpha=a;rr(PX0-22,PY0-22,PX1-PX0+44,PY1-PY0+44,26);g.fillStyle='#15603A';g.fill();
+  for(let i=0;i<8;i++){g.fillStyle=i%2?'rgba(255,255,255,.04)':'rgba(0,0,0,.06)';g.fillRect(PX0,PY0+i*(PY1-PY0)/8,PX1-PX0,(PY1-PY0)/8);}
+  g.strokeStyle='rgba(255,255,255,.8)';g.lineWidth=4;g.strokeRect(PX0,PY0,PX1-PX0,PY1-PY0);
+  g.beginPath();g.moveTo(PX0,PCY);g.lineTo(PX1,PCY);g.stroke();g.beginPath();g.arc(PCX,PCY,90,0,7);g.stroke();
+  for(const [y,dir] of [[PY0,1],[PY1,-1]]){g.strokeRect(PCX-170,dir>0?y:y-130,340,130);g.strokeRect(PCX-80,dir>0?y:y-50,160,50);}
+  goal(true,t,gTop);goal(false,t,gBot);
+  txt('BUT DE LA GRENADE',PCX,PY0-52,F(800,22,'JetBrains Mono'),GRN,'center',.9);txt('BUT DE LA BARBADE',PCX,PY1+74,F(800,22,'JetBrains Mono'),'#9DB8FF','center',.9);
+  g.restore();}
+// tableau de score ; les chiffres qui changent roulent vers le haut
+function board(b,gr,t,{prevB=b,prevG=gr,at=0,minute=null,a=1}={}){if(a<=0)return;const y=430;g.save();g.globalAlpha=a;
+  rr(W/2-310,y-72,620,112,26);g.fillStyle=C.panel;g.fill();g.strokeStyle='rgba(255,255,255,.14)';g.lineWidth=2;g.stroke();g.restore();
+  flagBB(W/2-250,y-16,72,48,a);txt('BAR',W/2-200,y,F(900,38),'#9DB8FF','left',a);flagGD(W/2+250,y-16,72,48,a);txt('GRN',W/2+200,y,F(900,38),GRN,'right',a);
+  const roll=(v,pv,x)=>{const p=UI(t-at);g.save();g.beginPath();g.rect(x-40,y-62,80,86);g.clip();
+    if(v!==pv&&t>=at){txt(String(pv),x,y+8-p*86,F(900,64),C.ink,'center',a);txt(String(v),x,y+8+(1-p)*86,F(900,64),v!==pv?C.sun:C.ink,'center',a);}else txt(String(t>=at?v:pv),x,y+8,F(900,64),C.ink,'center',a);g.restore();};
+  roll(b,prevB,W/2-62);txt('–',W/2,y+4,F(900,56),C.mute,'center',a);roll(gr,prevG,W/2+62);
+  if(minute)pill(minute,W/2,y+84,C.sun,C.night,a,28);}
+
+const SCENE={label:'HISTOIRE INSOLITE #2',
+ init(){const s=id=>TL.segs.find(x=>x.id===id);const st=id=>s(id).start,du=id=>s(id).dur;
+  const P=(id,i,k=0)=>{const x=s(id);return x.parts?x.parts[i][k]:null;};
+  // moments clés calés sur la voix (morceaux de parole) quand elle existe
+  T={own1:st('s1')+1.7,own2:P('s1',1,1)??st('s1')+du('s1')*.62,g21:(P('s4',2,1)??st('s4')+du('s4')*.52+.4)-.4,own87:P('s6',2,0)??st('s6')+du('s6')*.36,
+     gold:(P('s9',1,1)??st('s9')+du('s9')*.42+.3)-.3,elim:P('s4',4,0)??st('s4')+du('s4')*.68};},
+ cam(t){const s=id=>TL.segs.find(x=>x.id===id).start;
+  return camera([[0,1,W/2,900],[s('s6'),1.0,W/2,900],[s('s6')+.6,1.32,PCX,PY1-120],[T.own87+1.1,1,W/2,900],[s('s9'),1,W/2,900],[s('s9')+.3,1.25,PCX,PY0+140],[T.gold+.9,1,W/2,900]],t);},
+ sfx(){const ev=[];TL.segs.forEach((s,i)=>{if(i)ev.push([s.start-.12,'whoosh']);});
+  for(const k of ['own1','own2','g21','own87','gold'])ev.push([T[k],'thump'],[T[k]-.9,'kick']);
+  const s=id=>TL.segs.find(x=>x.id===id),at=(id,f)=>s(id).start+s(id).dur*f;
+  ev.push([at('s1',.3),'stamp'],[at('s3',.55),'stamp'],[T.elim,'stamp'],[at('s6',.5),'stamp'],[at('s9',.62),'stamp']);
+  for(let i=0;i<7;i++)ev.push([s('s5').start+.3+i*.35,'tick']);
+  ev.push([at('s2',.1),'pop'],[at('s2',.62),'pop'],[at('s5',.62),'pop'],[at('s7',.35),'pop'],[at('s7',.65),'pop'],[at('s10',.15),'pop'],[s('s11').start+1,'pop']);
+  return ev;},
+ S:{
+ s1(lt,d,t){
+  lt+=1.3; // la 1re image (miniature) montre déjà le titre et le terrain
+  rise(['ILS MARQUENT'],W/2,440,66,C.ink,.0,lt);rise(['CONTRE LEUR CAMP.'],W/2,515,66,C.sun,.25,lt);
+  const a=CAM(lt-.1);g.save();g.translate(W/2,970);g.scale(.94+.06*a,.94+.06*a);g.translate(-W/2,-970);pitch(t,cl(a*1.4,0,1),T.own2,T.own1);g.restore();
+  // 1er but contre son camp : un Barbadien (bleu) pousse le ballon dans son propre but
+  const u=eio((t-(T.own1-1.2))/1.2);const bx=lerp(PCX+40,PCX,u),by=lerp(PCY+40,PY1+14,u);
+  player(lerp(PCX+70,PCX+30,u),lerp(PCY,PY1-150,u),BAR,1,24,4);ball(bx,by,20,u*8);
+  for(let i=0;i<2;i++)player(PCX-200+i*400,PCY+200,BAR,1,24,[2,5][i]);
+  // 2e : un Grenadien (jaune) fait pareil vers le haut
+  const k=eio((t-(T.own2-1.0))/1.0);if(t>T.own2-1.2){player(lerp(PCX-90,PCX-30,k),lerp(PCY-40,PY0+150,k),GRN,1,24,9);ball(lerp(PCX-60,PCX,k),lerp(PCY-60,PY0-14,k),20,-k*8);}
+  for(let i=0;i<2;i++)player(PCX-220+i*440,PCY-200,GRN,cl((lt-.4)*3,0,1),24,[3,7][i]);
+  stamp('HISTOIRE VRAIE',W/2,1440,C.sun,-.05,lt-d*.82,54);
+ },
+ s2(lt,d,t){
+  chip('27 JANVIER 1994',1);
+  const o=ease((lt-d*.56)/.3);g.save();g.translate(0,-180*eio((lt-d*.56)/.5));
+  const p1=CAM(lt),p2=CAM(lt-.25);flagBB(lerp(-200,W/2-220,p1),720,280,186);flagGD(lerp(W+200,W/2+220,p2),720,280,186);
+  txt('VS',W/2,745,F(900,70),C.sun,'center',ease((lt-.5)/.3));
+  rise(['BARBADE'],W/2-220,880,44,'#9DB8FF',.3,lt);rise(['GRENADE'],W/2+220,880,44,GRN,.5,lt);
+  txt('QUALIFICATIONS · COUPE CARIBÉENNE',W/2,960,F(700,28,'JetBrains Mono'),C.mute,'center',ease((lt-.9)/.4));
+  g.restore();
+  if(lt>d*.56){g.save();const p=UI(lt-d*.6);g.globalAlpha=cl(p,0,1);g.translate(0,(1-p)*60);rr(130,960,820,330,32);g.fillStyle=C.panel;g.fill();g.strokeStyle=C.sun;g.lineWidth=3;g.stroke();g.restore();
+    txt('POUR SE QUALIFIER, LA BARBADE DOIT',W/2,1030,F(800,30),C.mute,'center',o);
+    rise(['GAGNER PAR'],W/2,1130,72,C.ink,d*.62,lt);rise(['2 BUTS D\'ÉCART'],W/2,1230,88,C.sun,d*.62+.2,lt);}
+ },
+ s3(lt,d,t){
+  chip('LA RÈGLE DU TOURNOI',1);
+  const p=TYPO(lt);g.save();g.translate(W/2,860+(1-p)*120);g.rotate(-.025);g.globalAlpha=cl(p*1.5,0,1);
+  rr(-360,-250,720,500,30);g.fillStyle=C.paper;g.fill();
+  txt('RÈGLEMENT',0,-160,F(900,40,'DejaVu Serif'),'#2A2A2A','center');g.fillStyle='rgba(0,0,0,.12)';for(let i=0;i<3;i++)g.fillRect(-280,-120+i*32,560-i*90,8);
+  txt('PROLONGATION',0,10,F(800,36),'#555','center');txt('BUT EN OR',0,100,F(900,96),C.night,'center');g.restore();g.globalAlpha=1;
+  stamp('= 2 BUTS',W/2+150,1180,C.sun,-.08,lt-d*.55,78);
+ },
+ s4(lt,d,t){
+  chip('LE MATCH',1);
+  board(2,1,t,{prevB:2,prevG:0,at:T.g21+.05,minute:t<T.g21?'2E MI-TEMPS':"83'"});
+  pitch(t,1,undefined,T.g21);
+  // attaque de la Grenade (vers le bas) jusqu'au but de la 83e
+  const u=eio((t-(T.g21-1.6))/1.6);
+  for(let i=0;i<3;i++)player(lerp(PCX-160+i*130,PCX-90+i*90,u),lerp(PCY-60,PY1-170,u)+i*24,GRN,1,24,[7,9,11][i]);
+  for(let i=0;i<3;i++)player(PCX-180+i*180,lerp(PCY+120,PY1-110,u),BAR,1,24,[2,4,5][i]);
+  ball(lerp(PCX-90,PCX+20,u),lerp(PCY-20,PY1+14,u),20,u*10);
+    stamp('BARBADE ÉLIMINÉE',W/2,1450,C.red,-.04,t-T.elim,52);
+ },
+ s5(lt,d,t){
+  chip("83' · LE PROBLÈME",1);
+  const out=d*.6,f=1-ease((lt-out)/.3);
+  if(f>0){g.save();g.globalAlpha=f;g.lineWidth=26;g.lineCap='round';g.beginPath();g.arc(W/2,800,210,0,7);g.strokeStyle='rgba(255,255,255,.12)';g.stroke();
+    const rem=1-cl((lt-.3)/2.45,0,1)*(1/7)*7*.0;g.beginPath();g.arc(W/2,800,210,-Math.PI/2,-Math.PI/2+2*Math.PI*(7/90)*(1-cl(lt/3,0,1)*.15)*6);g.strokeStyle=C.sun;g.stroke();g.restore();
+    rise(['7'],W/2,870,210,C.sun,0,lt,{out});rise(['MINUTES'],W/2,960,44,C.ink,.15,lt,{out});
+    for(let i=0;i<8;i++){const p=UI(lt-.8-i*.07);player(W/2-280+i*80,lerp(1350,1160+(i%2)*40,p),GRN,cl(p,0,1)*f,28);}
+    txt('DÉFENSE REGROUPÉE',W/2,1290,F(800,30),C.mute,'center',ease((lt-1.4)/.3)*f);}
+  rise(['ALORS, LES','BARBADIENS ONT','UNE IDÉE…'],W/2,760,92,(i)=>i>=5?C.sun:C.ink,out+.15,lt);
+ },
+ s6(lt,d,t){
+  chip("87' · LE COUP DE GÉNIE",1);
+  board(2,2,t,{prevB:2,prevG:1,at:T.own87+.05,minute:"87'"});
+  pitch(t,1,undefined,T.own87);
+  const u=eio((t-(T.own87-1.1))/1.1);
+  player(lerp(PCX+120,PCX+40,u),lerp(PY1-330,PY1-120,u),BAR,1,26,4);ball(lerp(PCX+100,PCX,u),lerp(PY1-300,PY1+14,u),20,u*10);
+  player(PCX-60,PY1-40,BAR,1,26,1);
+  for(let i=0;i<3;i++)player(PCX-180+i*180,PCY-120,GRN,1,24,[7,9,11][i]);
+  stamp('EXPRÈS',W/2,1010,C.sun,-.1,lt-d*.5,92);
+  pill('EN PROLONGATION, UN BUT = 2 BUTS',W/2,1450,C.sun,C.night,ease((lt-d*.74)/.3),32);
+ },
+ s7(lt,d,t){
+  chip('LE PIÈGE',1);board(2,2,t,{minute:"87'"});pitch(t,1);
+  for(let i=0;i<4;i++)player(PCX-150+i*100,PCY+14*Math.sin(t*3+i),GRN,1,24,[6,7,9,11][i]);
+  ball(PCX,PCY+50,20,t);
+  const arrow=(y1,p)=>{if(p<=0)return;g.save();g.strokeStyle=GRN;g.lineWidth=12;g.lineCap='round';g.setLineDash([26,18]);g.lineDashOffset=-t*70;
+    const ye=lerp(PCY,y1,p);g.beginPath();g.moveTo(PCX,PCY);g.lineTo(PCX,ye);g.stroke();g.setLineDash([]);g.fillStyle=GRN;g.beginPath();const s=Math.sign(y1-PCY);g.moveTo(PCX-26,ye-s*6);g.lineTo(PCX+26,ye-s*6);g.lineTo(PCX,ye+s*30);g.fill();g.restore();};
+  const a1=UI(lt-d*.32),a2=UI(lt-d*.62);arrow(PY1-60,cl(a1,0,1));arrow(PY0+60,cl(a2,0,1));
+  pill('BUT DANS LE CAMP ADVERSE → QUALIFIÉS',W/2,1450,C.panel,GRN,cl(a1,0,1),28);
+  pill('BUT CONTRE SON CAMP → QUALIFIÉS AUSSI',W/2,770,C.panel,GRN,cl(a2,0,1),28);
+ },
+ s8(lt,d,t){
+  chip('3 MINUTES SURRÉALISTES',1);board(2,2,t,{minute:"88'–90'"});pitch(t,1);
+  const k=CAM(lt);
+  for(let i=0;i<3;i++){player(PCX-100+i*100,lerp(PCY+60,PY0+80,k)+8*Math.sin(t*6+i),BAR,1,24);player(PCX-100+i*100,lerp(PCY+60,PY1-80,k)+8*Math.sin(t*6+i+1),BAR,1,24);}
+  const bx=PCX+200*Math.sin(t*1.9),by=PCY+200*Math.sin(t*1.25);ball(bx,by,20,t*4);
+  for(let i=0;i<3;i++)player(bx+70*Math.cos(t*2.6+i*2.1),by+70*Math.sin(t*2.6+i*2.1),GRN,1,24);
+  rise(['ELLE DÉFEND LES DEUX BUTS'],W/2,1450,44,(i)=>i>=3?C.sun:C.ink,d*.55,lt);
+ },
+ s9(lt,d,t){
+  chip('PROLONGATION · BUT EN OR',1);
+  board(4,2,t,{prevB:2,prevG:2,at:T.gold+.05,minute:t<T.gold?'PROLONGATION':'4–2  (2 + 2)'});
+  pitch(t,1,T.gold);
+  const u=eio((t-(T.gold-1.4))/1.4);
+  for(let i=0;i<3;i++)player(lerp(PCX-240+i*90,PCX-80+i*70,u),lerp(PCY+160,PY0+170,u),BAR,1,24,[7,9,10][i]);
+  player(PCX+40,PY0+40,GRN,1,26,1);
+  if(t<T.gold+.1)ball(lerp(PCX-160,PCX,u),lerp(PCY+90,PY0-14,u),22,u*12,u);
+  const fl=t-(T.gold+.35);flood(PCX,PY0,fl,C.sun);
+  if(fl>.25){rise(['4–2'],W/2,900,260,C.night,.0,fl-.25);rise(['LA BARBADE','EST QUALIFIÉE'],W/2,1080,70,C.night,.25,fl-.25);}
+ },
+ s10(lt,d,t){
+  chip('LA RÉACTION',1);
+  const p=UI(lt);g.globalAlpha=cl(p,0,1);txt('«',W/2,720,F(900,220,'DejaVu Serif'),C.sun,'center',cl(p,0,1));g.globalAlpha=1;
+  rise(['CELUI QUI A','INVENTÉ CES RÈGLES','DEVRAIT ÊTRE','INTERNÉ.'],W/2,840,70,(i)=>i>=8?C.sun:C.ink,.2,lt);
+  txt('— L\'ENTRAÎNEUR DE LA GRENADE (EN SUBSTANCE)',W/2,1240,F(700,26,'JetBrains Mono'),C.mute,'center',ease((lt-1.4)/.4));
+ },
+ s11(lt,d,t){CTA(lt,'1 histoire · 1 minute · chaque jour');}
+}};
+makeRender(SCENE);
+</script></body></html>

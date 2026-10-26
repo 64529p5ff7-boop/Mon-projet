@@ -1,0 +1,256 @@
+{
+ "total": 80.08,
+ "segs": [
+  {
+   "id": "s1",
+   "say": "En mille neuf cent soixante-six, la Coupe du monde a été volée. Et c'est un chien qui l'a retrouvée.",
+   "cap": "En 1966, la Coupe du monde a été volée. Et c'est un chien qui l'a retrouvée.",
+   "dur": 5.37,
+   "start": 0.4,
+   "parts": [
+    [
+     0.4,
+     1.92
+    ],
+    [
+     2.1,
+     3.7199999999999998
+    ],
+    [
+     4.21,
+     5.7700000000000005
+    ]
+   ]
+  },
+  {
+   "id": "s2",
+   "say": "Mars soixante-six. Quatre mois avant le Mondial en Angleterre, le trophée Jules Rimet est exposé à Londres… au milieu d'une expo de timbres.",
+   "cap": "Mars 66. Quatre mois avant le Mondial en Angleterre, le trophée Jules Rimet est exposé à Londres… au milieu d'une expo de timbres.",
+   "dur": 8.09,
+   "start": 6.3,
+   "parts": [
+    [
+     6.300000000000001,
+     7.6000000000000005
+    ],
+    [
+     8.04,
+     12.39
+    ],
+    [
+     12.83,
+     14.39
+    ]
+   ]
+  },
+  {
+   "id": "s3",
+   "say": "Un dimanche, la vitrine est forcée. Le trophée disparaît. Les timbres valaient pourtant bien plus cher… personne n'y a touché.",
+   "cap": "Un dimanche, la vitrine est forcée. Le trophée disparaît. Les timbres valaient pourtant bien plus cher… personne n'y a touché.",
+   "dur": 6.82,
+   "start": 14.89,
+   "parts": [
+    [
+     14.89,
+     16.66
+    ],
+    [
+     16.97,
+     18.009999999999998
+    ],
+    [
+     18.45,
+     20.43
+    ],
+    [
+     20.75,
+     21.709999999999997
+    ]
+   ]
+  },
+  {
+   "id": "s4",
+   "say": "Panique. Le patron du foot anglais reçoit une demande de rançon : quinze mille livres. Scotland Yard tend un piège et arrête un homme. Mais toujours pas de Coupe.",
+   "cap": "Panique. Le patron du foot anglais reçoit une demande de rançon : 15 000 livres. Scotland Yard tend un piège et arrête un homme. Mais toujours pas de Coupe.",
+   "dur": 8.9,
+   "start": 22.17,
+   "parts": [
+    [
+     22.169999999999998,
+     22.639999999999997
+    ],
+    [
+     23.04,
+     25.299999999999997
+    ],
+    [
+     25.66,
+     26.49
+    ],
+    [
+     26.95,
+     29.439999999999998
+    ],
+    [
+     29.81,
+     31.07
+    ]
+   ]
+  },
+  {
+   "id": "s5",
+   "say": "Une semaine après le vol, dans le sud de Londres, David Corbett sort promener son chien. Il s'appelle Pickles.",
+   "cap": "Une semaine après le vol, dans le sud de Londres, David Corbett sort promener son chien. Il s'appelle Pickles.",
+   "dur": 5.77,
+   "start": 31.6,
+   "parts": [
+    [
+     31.599999999999998,
+     35.82
+    ],
+    [
+     36.18,
+     37.37
+    ]
+   ]
+  },
+  {
+   "id": "s6",
+   "say": "Pickles renifle un paquet emballé dans du papier journal, au pied d'une haie. David l'ouvre… et tombe sur la Coupe du monde.",
+   "cap": "Pickles renifle un paquet emballé dans du papier journal, au pied d'une haie. David l'ouvre… et tombe sur la Coupe du monde.",
+   "dur": 7.05,
+   "start": 37.78,
+   "parts": [
+    [
+     37.78,
+     41.41
+    ],
+    [
+     41.809999999999995,
+     42.6
+    ],
+    [
+     43.059999999999995,
+     44.83
+    ]
+   ]
+  },
+  {
+   "id": "s7",
+   "say": "Petit détail : la police le soupçonne d'abord, lui. Avant de comprendre qu'il est juste le maître du héros.",
+   "cap": "Petit détail : la police le soupçonne d'abord, lui. Avant de comprendre qu'il est juste le maître du héros.",
+   "dur": 5.42,
+   "start": 45.38,
+   "parts": [
+    [
+     45.379999999999995,
+     46.04
+    ],
+    [
+     46.33,
+     47.96
+    ],
+    [
+     48.32,
+     50.8
+    ]
+   ]
+  },
+  {
+   "id": "s8",
+   "say": "Quatre mois plus tard, l'Angleterre gagne son Mondial. Pickles est invité au banquet des champions. Médaille, récompense, et même un rôle au cinéma.",
+   "cap": "Quatre mois plus tard, l'Angleterre gagne son Mondial. Pickles est invité au banquet des champions. Médaille, récompense, et même un rôle au cinéma.",
+   "dur": 8.22,
+   "start": 51.24,
+   "parts": [
+    [
+     51.24,
+     54.0
+    ],
+    [
+     54.339999999999996,
+     56.22
+    ],
+    [
+     56.49,
+     58.01
+    ],
+    [
+     58.25,
+     59.46
+    ]
+   ]
+  },
+  {
+   "id": "s9",
+   "say": "Mais l'histoire du trophée ne s'arrête pas là. Le Brésil le gagne pour de bon en mille neuf cent soixante-dix. Et en quatre-vingt-trois, à Rio… il est volé une deuxième fois.",
+   "cap": "Mais l'histoire du trophée ne s'arrête pas là. Le Brésil le gagne pour de bon en 1970. Et en 83, à Rio… il est volé une deuxième fois.",
+   "dur": 8.75,
+   "start": 59.85,
+   "parts": [
+    [
+     59.85,
+     61.559999999999995
+    ],
+    [
+     61.91,
+     64.74000000000001
+    ],
+    [
+     65.06,
+     66.73
+    ],
+    [
+     67.07000000000001,
+     68.60000000000001
+    ]
+   ]
+  },
+  {
+   "id": "s10",
+   "say": "Cette fois, pas de Pickles. Le trophée aurait été fondu. On ne l'a jamais revu.",
+   "cap": "Cette fois, pas de Pickles. Le trophée aurait été fondu. On ne l'a jamais revu.",
+   "dur": 4.35,
+   "start": 68.97,
+   "parts": [
+    [
+     68.97,
+     69.48
+    ],
+    [
+     69.71000000000001,
+     70.46000000000001
+    ],
+    [
+     70.73,
+     72.09
+    ],
+    [
+     72.43,
+     73.32000000000001
+    ]
+   ]
+  },
+  {
+   "id": "s11",
+   "say": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
+   "cap": "Abonne-toi à Wake up smart. Chaque jour, une histoire à savoir, en une minute.",
+   "dur": 4.5,
+   "start": 73.98,
+   "parts": [
+    [
+     73.98,
+     75.46000000000001
+    ],
+    [
+     75.72,
+     77.51
+    ],
+    [
+     77.71000000000001,
+     78.48
+    ]
+   ]
+  }
+ ]
+}
