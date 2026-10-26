@@ -1,0 +1,58 @@
+IA & NOUS — Script voix off pour ElevenLabs
+Durée vidéo : 1 min 28. Chaque plan : la voix démarre 0,5 s après le début du plan.
+Les balises <break time="..."/> créent des pauses (modèles Multilingual v2 / Turbo / Flash).
+Si "IA" est mal prononcé, écrire "I.A." ; si "Bukavu" sonne à la française, écrire "Boukavou" (idem "Kivou").
+
+────────────────────────────────────────
+PLAN 1 — Accroche · 0:00 → 0:08.5 · voix max 7 s
+Tu l'as remarqué ? <break time="0.35s"/> L'intelligence artificielle, ce n'est plus le futur. <break time="0.4s"/> Elle est déjà là. <break time="0.2s"/> Dans ta poche.
+
+PLAN 2 — Ce qu'elle fait déjà · 0:08.5 → 0:14.5 · voix max 4,8 s
+Elle écrit. <break time="0.2s"/> Elle traduit. <break time="0.2s"/> Et elle conseille, partout, à toute heure.
+
+PLAN 3 — Amani, étudiante · 0:14.5 → 0:23.5 · voix max 7,8 s
+Prends Amani. <break time="0.2s"/> Vingt et un ans, étudiante à Bukavu. <break time="0.35s"/> Le soir, elle révise avec un assistant IA… et il lui répond en swahili.
+
+PLAN 4 — Maman Neema, agricultrice · 0:23.5 → 0:32 · voix max 7,3 s
+Maman Neema, elle, prend en photo une feuille de manioc. <break time="0.35s"/> En quelques secondes, l'appli repère la maladie… et lui dit quoi faire.
+
+PLAN 5 — Dr Kalala, médecin · 0:32 → 0:41.5 · voix max 8,3 s
+Au centre de santé, le docteur Kalala s'en sert pour trier les cas plus vite. <break time="0.35s"/> Mais attention : la décision finale, c'est toujours lui.
+
+PLAN 6 — Le revers : deepfakes · 0:41.5 → 0:50 · voix max 7,3 s  (ton plus grave)
+Sauf que… <break time="0.35s"/> l'IA sait aussi mentir. <break time="0.25s"/> Fausses voix. Fausses vidéos. <break time="0.35s"/> Alors, avant de partager… vérifie.
+
+PLAN 7 — Nos réalités, nos défis · 0:50 → 1:00.5 · voix max 9,3 s
+Et chez nous, les défis sont bien réels. <break time="0.3s"/> Le courant qui coupe. Internet qui coûte cher. Des métiers qui changent. <break time="0.3s"/> Nos langues, encore oubliées. Et nos données, pas toujours protégées.
+
+PLAN 8 — Le coltan du Kivu · 1:00.5 → 1:10 · voix max 8,3 s
+Le coltan qu'on extrait au Kivu finit dans nos téléphones… et dans les machines qui font tourner l'IA. <break time="0.4s"/> Alors, la vraie question : <break time="0.2s"/> qui en profite ?
+
+PLAN 9 — Spectateur ou acteur · 1:10 → 1:19 · voix max 7,8 s  (ton qui remonte, énergique)
+Donc, à nous de choisir. <break time="0.3s"/> Rester spectateur… ou devenir acteur. <break time="0.4s"/> Apprendre. <break time="0.2s"/> Vérifier. <break time="0.2s"/> Créer.
+
+PLAN 10 — Carte finale · 1:19 → 1:27.5 · voix max 7 s  (chaleureux, sourire dans la voix)
+L'IA n'a pas notre voix. <break time="0.35s"/> Mais on peut s'en servir pour la porter plus loin. <break time="0.3s"/> Abonne-toi, et on apprend ensemble.
+
+────────────────────────────────────────
+TEXTE BRUT (sans balises, à coller d'un bloc)
+
+Tu l'as remarqué ? L'intelligence artificielle, ce n'est plus le futur. Elle est déjà là. Dans ta poche.
+
+Elle écrit. Elle traduit. Et elle conseille, partout, à toute heure.
+
+Prends Amani. Vingt et un ans, étudiante à Bukavu. Le soir, elle révise avec un assistant IA… et il lui répond en swahili.
+
+Maman Neema, elle, prend en photo une feuille de manioc. En quelques secondes, l'appli repère la maladie… et lui dit quoi faire.
+
+Au centre de santé, le docteur Kalala s'en sert pour trier les cas plus vite. Mais attention : la décision finale, c'est toujours lui.
+
+Sauf que… l'IA sait aussi mentir. Fausses voix. Fausses vidéos. Alors, avant de partager… vérifie.
+
+Et chez nous, les défis sont bien réels. Le courant qui coupe. Internet qui coûte cher. Des métiers qui changent. Nos langues, encore oubliées. Et nos données, pas toujours protégées.
+
+Le coltan qu'on extrait au Kivu finit dans nos téléphones… et dans les machines qui font tourner l'IA. Alors, la vraie question : qui en profite ?
+
+Donc, à nous de choisir. Rester spectateur… ou devenir acteur. Apprendre. Vérifier. Créer.
+
+L'IA n'a pas notre voix. Mais on peut s'en servir pour la porter plus loin. Abonne-toi, et on apprend ensemble.
