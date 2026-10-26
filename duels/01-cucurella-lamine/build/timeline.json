@@ -1,5 +1,5 @@
 {
- "total": 72.044,
+ "total": 75.34,
  "segs": [
   {
    "id": "s1",
@@ -77,6 +77,13 @@
    "cap": "Alors, Lamine a trouvé sa kryptonite… ou c'était juste un mauvais soir ? Dis-le en commentaire.",
    "dur": 4.63,
    "start": 65.814
+  },
+  {
+   "id": "s12",
+   "say": "Abonne-toi à Wake up smart, pour le prochain duel.",
+   "cap": "Abonne-toi à Wake up smart, pour le prochain duel.",
+   "dur": 2.846,
+   "start": 70.894
   }
  ]
 }

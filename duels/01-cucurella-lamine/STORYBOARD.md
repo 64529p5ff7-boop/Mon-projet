@@ -17,7 +17,8 @@ sous forme de **mode d'emploi en 4 règles**. Chaque règle devient une brique d
 | 8 | Règle 4 | Ne jamais plonger | Carton jaune qui ne sort pas, carte Mourinho, tampon « il reste debout ». |
 | 9 | Le mur | Lamine contre le mur, Mbappé ×2 | Les 4 règles empilées en briques, Lamine qui rebondit dessus ; Mbappé, deux ballons. |
 | 10 | Pas nouveau | Nuno Mendes, même profil | Deux fiches (Mendes 2025, Cucurella 2026) puis la liste « même profil » cochée. |
-| 11 | La question | Kryptonite ou mauvais soir ? | Deux boutons de vote, « réponds en commentaire », puis « abonne-toi ». |
+| 11 | La question | Kryptonite ou mauvais soir ? | Deux boutons de vote, « réponds en commentaire ». |
+| 12 | Signature | Abonne-toi à Wake up smart | Écran de fin Wake up smart (soleil levant, nom, bouton « abonne-toi »), comme les autres épisodes. |
 
 Ce qui change par rapport à l'original :
 - une seule idée directrice (le mode d'emploi) au lieu d'une liste de secrets ;
