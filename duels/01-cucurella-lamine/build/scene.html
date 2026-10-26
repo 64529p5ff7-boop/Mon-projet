@@ -96,7 +96,7 @@ const SCENE={label:'DUEL N°1 · CLASICO',
   ev.push([at('s8',.3),'pop'],[at('s8',.85),'stamp']);
   [.12,.24,.36,.48].forEach(f=>ev.push([at('s9',f),'thump']));ev.push([at('s9',.62),'pop'],[at('s9',.8),'pop']);
   ev.push([at('s10',.05),'pop'],[at('s10',.3),'pop']);[.58,.68,.78,.88].forEach(f=>ev.push([at('s10',f),'tick']));
-  ev.push([at('s11',.3),'pop'],[at('s11',.45),'pop'],[s('s12').start+.25,'thump'],[s('s12').start+1,'pop']);
+  ev.push([at('s11',.3),'pop'],[at('s11',.45),'pop'],[s('s11').start+s('s11').dur+.4,'pop']);
   return ev;},
  S:{
  // 1. La promesse (la 1re image sert de miniature : tout est déjà en place)
@@ -257,9 +257,8 @@ const SCENE={label:'DUEL N°1 · CLASICO',
   if(b2>0){g.save();g.translate(W/2,1240);g.scale(.9+.1*b2,.9+.1*b2);g.globalAlpha=cl(b2,0,1);rr(-400,-70,800,130,30);g.fillStyle=C.sun;g.fill();txt('JUSTE UN MAUVAIS SOIR',0,18,F(900,46),C.night);g.restore();}
   g.globalAlpha=1;
   txt('RÉPONDS EN COMMENTAIRE ↓',W/2,1400,F(800,34,'JetBrains Mono'),C.ink,'center',ease((lt-d*.7)/.3));
- },
- // 12. Signature Wake up smart
- s12(lt,d,t){CTA(lt,'Les duels du foot, décryptés en une minute');}
+  const s=UI(lt-d-.3);if(s>0){g.save();g.translate(W/2,480);g.scale(.9+.1*s,.9+.1*s);g.globalAlpha=cl(s,0,1);rr(-230,-50,460,100,50);g.fillStyle=C.sun;g.fill();txt('+  ABONNE-TOI',0,16,F(900,40),C.night);g.restore();g.globalAlpha=1;}
+ }
 }};
 // Variante locale de rise() : départ à 1,35 × la taille (les accents restent cachés avant l'entrée).
 function rise(lines,x,y,size,col,t0,lt,{align='center',lh=1.08,w=900,out=null}={}){

@@ -1,89 +1,240 @@
 {
- "total": 75.34,
+ "total": 77.76,
  "segs": [
   {
    "id": "s1",
    "say": "Lamine Yamal l'avait promis : « Cucurella, je vais le manger. »",
    "cap": "Lamine Yamal l'avait promis : « Cucurella, je vais le manger. »",
-   "dur": 2.699,
-   "start": 0.4
+   "dur": 3.417,
+   "start": 0.4,
+   "parts": [
+    [
+     0.4,
+     1.764
+    ],
+    [
+     2.153,
+     3.817
+    ]
+   ]
   },
   {
    "id": "s2",
    "say": "Dimanche, au Camp Nou : cinq tirs… zéro cadré. Et le Real gagne, deux à un.",
    "cap": "Dimanche, au Camp Nou : 5 tirs… 0 cadré. Et le Real gagne, 2 à 1.",
-   "dur": 4.057,
-   "start": 3.549
+   "dur": 5.142,
+   "start": 4.357,
+   "parts": [
+    [
+     4.357,
+     5.6
+    ],
+    [
+     5.881,
+     6.618
+    ],
+    [
+     6.921,
+     7.641
+    ],
+    [
+     8.036,
+     9.499
+    ]
+   ]
   },
   {
    "id": "s3",
    "say": "Le problème, c'est que Cucurella connaît Lamine par cœur. Champions d'Europe ensemble, des dizaines d'entraînements face à face avec l'Espagne.",
    "cap": "Le problème, c'est que Cucurella connaît Lamine par cœur. Champions d'Europe ensemble, des dizaines d'entraînements face à face avec l'Espagne.",
-   "dur": 6.979,
-   "start": 8.056
+   "dur": 7.033,
+   "start": 10.031,
+   "parts": [
+    [
+     10.031,
+     12.744
+    ],
+    [
+     13.133,
+     17.064
+    ]
+   ]
   },
   {
    "id": "s4",
    "say": "Cet été, il signe au Real. Et pour le Clasico, il arrive avec un mode d'emploi.",
    "cap": "Cet été, il signe au Real. Et pour le Clasico, il arrive avec un mode d'emploi.",
-   "dur": 4.307,
-   "start": 15.485
+   "dur": 4.206,
+   "start": 17.48,
+   "parts": [
+    [
+     17.48,
+     18.995
+    ],
+    [
+     19.295,
+     21.686
+    ]
+   ]
   },
   {
    "id": "s5",
    "say": "Règle numéro un : ne jamais lui faire face. Lamine est gaucher : il veut rentrer dans l'axe et enrouler. Alors Cucurella se place de trois-quarts… et lui ferme l'intérieur.",
    "cap": "Règle n°1 : ne jamais lui faire face. Lamine est gaucher : il veut rentrer dans l'axe et enrouler. Alors Cucurella se place de trois-quarts… et lui ferme l'intérieur.",
-   "dur": 8.502,
-   "start": 20.242
+   "dur": 9.542,
+   "start": 22.129,
+   "parts": [
+    [
+     22.129,
+     24.717
+    ],
+    [
+     25.149,
+     26.137
+    ],
+    [
+     26.45,
+     28.093
+    ],
+    [
+     28.469,
+     30.328
+    ],
+    [
+     30.63,
+     31.671
+    ]
+   ]
   },
   {
    "id": "s6",
    "say": "Règle numéro deux : ne lui laisser qu'une porte. Le long de la ligne, sur son pied droit. Là, il est beaucoup moins dangereux.",
    "cap": "Règle n°2 : ne lui laisser qu'une porte. Le long de la ligne, sur son pied droit. Là, il est beaucoup moins dangereux.",
-   "dur": 5.79,
-   "start": 29.194
+   "dur": 6.421,
+   "start": 32.204,
+   "parts": [
+    [
+     32.204,
+     34.725
+    ],
+    [
+     35.055,
+     36.675
+    ],
+    [
+     37.022,
+     38.625
+    ]
+   ]
   },
   {
    "id": "s7",
    "say": "Règle numéro trois : coller. Dès qu'il reçoit dos au but, Cucurella est déjà sur lui. Impossible de se retourner.",
    "cap": "Règle n°3 : coller. Dès qu'il reçoit dos au but, Cucurella est déjà sur lui. Impossible de se retourner.",
-   "dur": 6.533,
-   "start": 35.434
+   "dur": 6.435,
+   "start": 39.026,
+   "parts": [
+    [
+     39.026,
+     40.046
+    ],
+    [
+     40.377,
+     40.644
+    ],
+    [
+     41.006,
+     43.85
+    ],
+    [
+     44.183,
+     45.461
+    ]
+   ]
   },
   {
    "id": "s8",
    "say": "Règle numéro quatre : ne jamais plonger. Lamine cherche la faute. Mourinho dira même qu'il a tout tenté pour le faire expulser. Cucurella, lui, reste debout.",
    "cap": "Règle n°4 : ne jamais plonger. Lamine cherche la faute. Mourinho dira même qu'il a tout tenté pour le faire expulser. Cucurella, lui, reste debout.",
-   "dur": 8.454,
-   "start": 42.417
+   "dur": 9.04,
+   "start": 45.87,
+   "parts": [
+    [
+     45.87,
+     48.249
+    ],
+    [
+     48.628,
+     49.848
+    ],
+    [
+     50.17,
+     52.833
+    ],
+    [
+     53.23,
+     54.91
+    ]
+   ]
   },
   {
    "id": "s9",
    "say": "Pendant que Lamine se cogne contre ce mur… Mbappé, lui, marque deux fois.",
    "cap": "Pendant que Lamine se cogne contre ce mur… Mbappé, lui, marque deux fois.",
-   "dur": 3.409,
-   "start": 51.321
+   "dur": 4.113,
+   "start": 55.329,
+   "parts": [
+    [
+     55.329,
+     57.277
+    ],
+    [
+     57.637,
+     59.442
+    ]
+   ]
   },
   {
    "id": "s10",
    "say": "Et ce mode d'emploi n'est pas nouveau. En finale de Ligue des nations, Nuno Mendes avait fait exactement pareil. Même profil : un latéral gauche agressif, qui le colle, et l'envoie sur son pied droit.",
    "cap": "Et ce mode d'emploi n'est pas nouveau. En finale de Ligue des nations, Nuno Mendes avait fait exactement pareil. Même profil : un latéral gauche agressif, qui le colle, et l'envoie sur son pied droit.",
-   "dur": 10.184,
-   "start": 55.18
+   "dur": 10.356,
+   "start": 59.953,
+   "parts": [
+    [
+     59.953,
+     61.311
+    ],
+    [
+     61.668,
+     65.361
+    ],
+    [
+     65.694,
+     70.309
+    ]
+   ]
   },
   {
    "id": "s11",
    "say": "Alors, Lamine a trouvé sa kryptonite… ou c'était juste un mauvais soir ? Dis-le en commentaire.",
    "cap": "Alors, Lamine a trouvé sa kryptonite… ou c'était juste un mauvais soir ? Dis-le en commentaire.",
-   "dur": 4.63,
-   "start": 65.814
-  },
-  {
-   "id": "s12",
-   "say": "Abonne-toi à Wake up smart, pour le prochain duel.",
-   "cap": "Abonne-toi à Wake up smart, pour le prochain duel.",
-   "dur": 2.846,
-   "start": 70.894
+   "dur": 5.477,
+   "start": 70.683,
+   "parts": [
+    [
+     70.683,
+     72.764
+    ],
+    [
+     73.142,
+     74.712
+    ],
+    [
+     75.108,
+     76.16
+    ]
+   ]
   }
  ]
 }

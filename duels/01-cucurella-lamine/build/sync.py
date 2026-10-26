@@ -27,8 +27,13 @@ c=min(range(n-2,m-1),key=lambda c:best[n-2][c]); cuts=[c]
 for j in range(n-2,0,-1): c=prev[j][c]; cuts.append(c)
 cuts=cuts[::-1]; bounds=[-1]+cuts+[m-1]
 LEAD=0.4
+# Corrections vérifiées à l'écoute : (plan, plan suivant) → le 1er morceau du suivant revient au précédent.
+# Voix du 26/10 : « Et le Real gagne, deux à un » était rangé dans s3.
+FIX=[(1,2)]
+groups=[list(range(bounds[i]+1,bounds[i+1]+1)) for i in range(n)]
+for i,j in FIX: groups[i].append(groups[j].pop(0))
 for i,s in enumerate(segs):
-    parts=[[round(sp[k][0]+LEAD,3),round(sp[k][1]+LEAD,3)] for k in range(bounds[i]+1,bounds[i+1]+1)]
+    parts=[[round(sp[k][0]+LEAD,3),round(sp[k][1]+LEAD,3)] for k in groups[i]]
     s["start"]=parts[0][0]; s["dur"]=round(parts[-1][1]-parts[0][0],3); s["parts"]=parts
     print(s["id"],s["start"],s["dur"],s["cap"][:40])
 total=round(sp[-1][1]+LEAD+1.6,3)
