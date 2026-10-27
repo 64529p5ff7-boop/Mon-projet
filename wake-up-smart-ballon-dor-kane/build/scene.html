@@ -1,0 +1,266 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../histoires-insolites/core/core.js"></script>
+<script>
+// Ballon d'Or 2026 : Harry Kane, le roi sans couronne.
+// Fil rouge : la vitrine vide de Tottenham (plan 2) se remplit enfin au Bayern (plan 7).
+const GOLD='#F2C14E',GOLD2='#FFE6A0',SPURS='#132257',BAYERN='#DC052D',SILVER='#C9D0DC',GREEN='#4BE08A';
+let T={};
+
+// ---------- Photos (détourées depuis la photo envoyée) ----------
+// fx, fy, fr : centre et rayon du visage dans l'image, en pixels.
+const PL={
+ kane:{src:'photos/kane.png',fx:435,fy:340,fr:175,ini:'HK',col:BAYERN,col2:'#5A0B1E'},
+ mbappe:{src:'photos/mbappe.png',fx:420,fy:265,fr:150,ini:'KM',col:'#EDEBFF',col2:'#B9B6E0'},
+ yamal:{src:'photos/yamal.png',fx:530,fy:385,fr:150,ini:'LY',col:'#A50044',col2:'#2A4BD7'},
+};
+const IMG={},BUST={};
+function loadImg(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src;});}
+function makeBust(im){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);
+  x.globalCompositeOperation='destination-in';const gr=x.createLinearGradient(0,im.height*.42,0,im.height*.78);gr.addColorStop(0,'#000');gr.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gr;x.fillRect(0,0,im.width,im.height);return c;}
+function face(id,x,y,r,{a=1,ring=null,lw=null,filter=null,sc=1}={}){if(a<=0||r<=0)return;const p=PL[id],im=IMG[id];
+  g.save();g.globalAlpha=a;g.translate(x,y);g.scale(sc,sc);
+  g.beginPath();g.arc(0,0,r,0,7);const bg=g.createLinearGradient(0,-r,0,r);bg.addColorStop(0,p.col2);bg.addColorStop(1,p.col);g.fillStyle=bg;g.fill();
+  g.save();g.clip();if(filter)g.filter=filter;
+  if(im){const k=r/p.fr*.8;g.drawImage(im,-p.fx*k,-p.fy*k+r*.1,im.width*k,im.height*k);}else txt(p.ini,0,r*.36,F(900,r*.95),'#fff','center');
+  g.restore();
+  g.beginPath();g.arc(0,0,r,0,7);g.lineWidth=lw||Math.max(3,r*.08);g.strokeStyle=ring||p.col;g.stroke();
+  g.restore();g.globalAlpha=1;}
+function bust(id,x,y,h,a=1,filter=null){const b=BUST[id];if(!b||a<=0)return;const w=b.width*h/b.height;
+  g.save();g.globalAlpha=a;if(filter)g.filter=filter;g.drawImage(b,x-w/2,y-h,w,h);g.restore();g.globalAlpha=1;}
+
+// ---------- Objets ----------
+// Ballon d'Or : sphère dorée, méridiens qui tournent, socle sombre.
+function goldBall(x,y,r,a=1,spin=0){if(a<=0||r<=0)return;g.save();g.globalAlpha=a;
+  glow(x,y,r*2.8,a,'255,196,80');
+  g.beginPath();g.moveTo(x-r*.32,y+r*.82);g.lineTo(x+r*.32,y+r*.82);g.lineTo(x+r*.62,y+r*1.42);g.lineTo(x-r*.62,y+r*1.42);g.closePath();
+  const bg=g.createLinearGradient(x,y+r*.8,x,y+r*1.42);bg.addColorStop(0,'#2A1E0C');bg.addColorStop(1,'#0E0A04');g.fillStyle=bg;g.fill();
+  g.fillStyle=GOLD;g.fillRect(x-r*.5,y+r*1.14,r,r*.06);
+  const sg=g.createRadialGradient(x-r*.35,y-r*.4,r*.05,x,y,r);sg.addColorStop(0,'#FFF7D6');sg.addColorStop(.4,GOLD);sg.addColorStop(.85,'#A8721A');sg.addColorStop(1,'#5E3C0C');
+  g.beginPath();g.arc(x,y,r,0,7);g.fillStyle=sg;g.fill();
+  g.save();g.clip();g.strokeStyle='rgba(95,58,10,.45)';g.lineWidth=Math.max(1.5,r*.025);
+  for(let k=0;k<6;k++){const ph=spin+k*Math.PI/6,rx=Math.abs(Math.cos(ph))*r;g.beginPath();g.ellipse(x,y,rx,r,0,0,7);g.stroke();}
+  for(const f of [-.5,0,.5]){g.beginPath();g.ellipse(x,y+f*r,Math.sqrt(1-f*f)*r,r*.12,0,0,7);g.stroke();}
+  g.beginPath();g.ellipse(x-r*.35,y-r*.42,r*.32,r*.18,-.6,0,7);g.fillStyle='rgba(255,255,255,.45)';g.fill();
+  g.restore();g.restore();g.globalAlpha=1;}
+// Coupe générique (s = échelle, (x,y) = bas du socle).
+function cup(x,y,s,a=1,c1=GOLD2,c2='#B07A1E'){if(a<=0)return;g.save();g.globalAlpha=a;g.translate(x,y);g.scale(s,s);
+  const gr=g.createLinearGradient(-70,0,70,0);gr.addColorStop(0,c2);gr.addColorStop(.45,c1);gr.addColorStop(1,c2);g.fillStyle=gr;g.strokeStyle=gr;
+  rr(-55,-30,110,30,6);g.fill();rr(-34,-48,68,20,4);g.fill();g.fillRect(-10,-100,20,54);
+  g.beginPath();g.moveTo(-70,-220);g.lineTo(70,-220);g.quadraticCurveTo(70,-110,0,-100);g.quadraticCurveTo(-70,-110,-70,-220);g.fill();
+  g.lineWidth=12;g.beginPath();g.arc(-72,-180,26,Math.PI*.5,Math.PI*1.5);g.stroke();g.beginPath();g.arc(72,-180,26,-Math.PI*.5,Math.PI*.5);g.stroke();
+  g.restore();g.globalAlpha=1;}
+// Saladier d'argent du championnat d'Allemagne, vu de trois-quarts.
+function plate(x,y,r,a=1){if(a<=0)return;g.save();g.globalAlpha=a;g.translate(x,y);g.scale(1,.42);
+  const gr=g.createRadialGradient(-r*.3,-r*.3,r*.1,0,0,r);gr.addColorStop(0,'#FFFFFF');gr.addColorStop(.6,SILVER);gr.addColorStop(1,'#7D8698');
+  g.beginPath();g.arc(0,0,r,0,7);g.fillStyle=gr;g.fill();
+  for(const f of [.82,.6,.32]){g.beginPath();g.arc(0,0,r*f,0,7);g.strokeStyle='rgba(60,70,90,.5)';g.lineWidth=r*.03;g.stroke();}
+  for(let i=0;i<12;i++){const an=i*Math.PI/6;g.beginPath();g.arc(Math.cos(an)*r*.71,Math.sin(an)*r*.71,r*.045,0,7);g.fillStyle=GOLD;g.fill();}
+  g.restore();g.globalAlpha=1;}
+function medal(x,y,r,a=1,col=SILVER){if(a<=0)return;g.save();g.globalAlpha=a;g.translate(x,y);
+  g.fillStyle='#C8102E';g.beginPath();g.moveTo(-r*.7,-r*2.2);g.lineTo(-r*.1,-r*.6);g.lineTo(r*.2,-r*.9);g.lineTo(-r*.25,-r*2.2);g.fill();
+  g.fillStyle='#1D3E8A';g.beginPath();g.moveTo(r*.7,-r*2.2);g.lineTo(r*.1,-r*.6);g.lineTo(-r*.2,-r*.9);g.lineTo(r*.25,-r*2.2);g.fill();
+  const gr=g.createRadialGradient(-r*.3,-r*.3,r*.1,0,0,r);gr.addColorStop(0,'#fff');gr.addColorStop(1,col);g.beginPath();g.arc(0,0,r,0,7);g.fillStyle=gr;g.fill();
+  g.beginPath();g.arc(0,0,r*.72,0,7);g.strokeStyle='rgba(80,90,110,.5)';g.lineWidth=r*.08;g.stroke();g.restore();g.globalAlpha=1;}
+// Vitrine en verre : 2 étagères, spot en haut.
+function cabinet(x,y,w,h,a=1){if(a<=0)return;g.save();g.globalAlpha=a;
+  const sp=g.createLinearGradient(0,y,0,y+h);sp.addColorStop(0,'rgba(255,230,160,.14)');sp.addColorStop(1,'rgba(255,230,160,0)');
+  rr(x,y,w,h,18);g.fillStyle='rgba(255,255,255,.03)';g.fill();g.fillStyle=sp;g.fill();g.lineWidth=4;g.strokeStyle='rgba(255,255,255,.28)';g.stroke();
+  for(const f of [.5,1]){g.fillStyle='rgba(255,255,255,.22)';g.fillRect(x+16,y+h*f-24,w-32,8);}
+  g.strokeStyle='rgba(255,255,255,.07)';g.lineWidth=18;g.beginPath();g.moveTo(x+w*.15,y+h);g.lineTo(x+w*.45,y);g.stroke();
+  g.restore();g.globalAlpha=1;}
+function skyline(y,a,t){if(a<=0)return;g.save();g.globalAlpha=a;g.fillStyle='#070A18';
+  const B=[[0,180],[70,120],[130,230],[210,150],[300,200],[560,140],[640,260],[700,170],[790,210],[880,130],[960,240],[1020,160]];
+  B.forEach(([bx,h],i)=>{const w=(B[i+1]?B[i+1][0]:W)-bx;g.fillRect(bx,y-h,w+1,h+400);
+    for(let k=0;k<6;k++){if(Math.sin(i*13+k*7)>.2){g.fillStyle=`rgba(255,214,140,${.35+.2*Math.sin(t*2+i+k)})`;g.fillRect(bx+12+(k%3)*18,y-h+20+Math.floor(k/3)*34,8,12);g.fillStyle='#070A18';}}});
+  // Big Ben
+  g.fillRect(400,y-470,90,470);g.beginPath();g.moveTo(392,y-470);g.lineTo(445,y-600);g.lineTo(498,y-470);g.fill();
+  g.beginPath();g.arc(445,y-400,30,0,7);g.fillStyle='#FFE3A0';g.fill();g.strokeStyle='#070A18';g.lineWidth=4;g.beginPath();g.moveTo(445,y-400);g.lineTo(445,y-420);g.moveTo(445,y-400);g.lineTo(460,y-400);g.stroke();
+  // la grande roue
+  const ex=760,ey=y-330,er=190;g.strokeStyle='rgba(180,200,255,.35)';g.lineWidth=5;g.beginPath();g.arc(ex,ey,er,0,7);g.stroke();
+  for(let i=0;i<16;i++){const an=i*Math.PI/8+t*.1;g.lineWidth=2;g.beginPath();g.moveTo(ex,ey);g.lineTo(ex+Math.cos(an)*er,ey+Math.sin(an)*er);g.stroke();
+    g.beginPath();g.arc(ex+Math.cos(an)*er,ey+Math.sin(an)*er,7,0,7);g.fillStyle='rgba(255,214,140,.8)';g.fill();}
+  g.fillStyle='#070A18';g.beginPath();g.moveTo(ex-90,y);g.lineTo(ex,ey);g.lineTo(ex+90,y);g.closePath();g.fill();
+  g.restore();g.globalAlpha=1;}
+function confetti(tau,cols=[GOLD,GOLD2,'#fff',BAYERN]){if(tau<=0)return;
+  for(let i=0;i<70;i++){const x=(i*137.5)%W,sp=260+(i*53%220),y=-40+((tau*sp+i*97)%1500)+220;g.save();g.translate(x+30*Math.sin(tau*2+i),y);g.rotate(tau*3+i);
+    g.fillStyle=cols[i%cols.length];g.globalAlpha=cl(tau*3,0,1)*.9;g.fillRect(-9,-4,18,8);g.restore();}g.globalAlpha=1;}
+function cross(x,y,s,a,col=C.red){if(a<=0)return;const k=UI(a);g.save();g.translate(x,y);g.scale(k,k);g.strokeStyle=col;g.lineWidth=12;g.lineCap='round';g.beginPath();g.moveTo(-s,-s);g.lineTo(s,s);g.moveTo(s,-s);g.lineTo(-s,s);g.stroke();g.restore();}
+function card(x,y,w,h,a,draw){if(a<=0)return;g.save();g.globalAlpha=cl(a,0,1);g.translate(0,(1-a)*60);rr(x,y,w,h,24);g.fillStyle=C.panel;g.fill();g.lineWidth=2;g.strokeStyle='rgba(255,255,255,.08)';g.stroke();draw(x,y,w,h);g.restore();g.globalAlpha=1;}
+function shake(lt,t0,amp=12){const k=lt-t0;if(k<0||k>.3)return;const f=amp*(1-k/.3);g.translate(f*Math.sin(k*90),f*Math.cos(k*70));}
+function spot(x,a){if(a<=0)return;g.save();g.globalAlpha=a;const gr=g.createLinearGradient(0,212,0,1500);gr.addColorStop(0,'rgba(255,230,160,.30)');gr.addColorStop(1,'rgba(255,230,160,0)');
+  g.beginPath();g.moveTo(x-60,212);g.lineTo(x+60,212);g.lineTo(x+380,1500);g.lineTo(x-380,1500);g.closePath();g.fillStyle=gr;g.fill();g.restore();g.globalAlpha=1;}
+// Variante de rise() : départ plus bas pour que les accents restent cachés avant l'entrée du mot.
+function rise(lines,x,y,size,col,t0,lt,{align='center',lh=1.08,w=900,out=null}={}){
+  g.font=F(w,size);let wi=0;
+  lines.forEach((line,li)=>{const ws=line.split(' '),sp=g.measureText(' ').width,tw=ws.reduce((a,s)=>a+g.measureText(s).width,0)+sp*(ws.length-1);
+    let cx=align==='center'?x-tw/2:align==='right'?x-tw:x;const by=y+li*size*lh;
+    ws.forEach(s=>{const mw=g.measureText(s).width,p=TYPO(lt-t0-wi*.055),o=out!==null?ease((lt-out)/.25):0;
+      g.save();g.beginPath();g.rect(cx-6,by-size*1.0,mw+12,size*1.28);g.clip();
+      const dy=(1-p)*size*1.35-o*size*1.35;const col_=typeof col==='function'?col(wi,s):col;
+      g.font=F(w,size);g.fillStyle=col_;g.textAlign='left';g.fillText(s,cx,by+dy);g.restore();cx+=mw+sp;wi++;});});
+}
+
+const SCENE={label:'BALLON D\'OR 2026',
+ init(){},
+ sfx(){const ev=[];const s=id=>TL.segs.find(x=>x.id===id),at=(id,f)=>s(id).start+s(id).dur*f;
+  TL.segs.forEach((x,i)=>{if(i)ev.push([x.start-.12,'whoosh']);});
+  ev.push([at('s1',.1),'stamp'],[at('s1',.55),'thump'],[at('s1',.62),'pop']);
+  for(let i=0;i<10;i++)ev.push([at('s2',.2+i*.03),'tick']);ev.push([at('s2',.5),'pop'],[at('s2',.82),'thump']);
+  [.14,.32,.52,.7,.84].forEach(f=>ev.push([at('s3',f),'kick'],[at('s3',f+.06),'stamp']));
+  for(let i=0;i<11;i++)ev.push([at('s4',.3+i*.025),'tick']);ev.push([at('s4',.8),'stamp']);
+  [.12,.2,.28,.36,.44].forEach(f=>ev.push([at('s5',f),'pop']));ev.push([at('s5',.55),'stamp']);
+  [.2,.3,.4].forEach(f=>ev.push([at('s6',f),'kick']));ev.push([at('s6',.62),'thump'],[at('s6',.66),'pop']);
+  [.14,.24,.34].forEach(f=>ev.push([at('s7',f),'thump']));ev.push([at('s7',.6),'whoosh']);
+  ev.push([at('s8',.1),'thump'],[at('s8',.38),'pop'],[at('s8',.55),'pop'],[at('s8',.75),'stamp']);
+  ev.push([at('s9',.64),'pop']);ev.push([at('s10',.1),'thump'],[at('s10',.55),'thump']);
+  ev.push([at('s11',.3),'pop'],[at('s11',.45),'pop']);
+  return ev;},
+ S:{
+ // 1. Maudit… puis Ballon d'Or (la 1re image sert de miniature)
+ s1(lt,d,t){lt+=1.2;const D=d+1.2,m=D*.52,u=ease((lt-m)/.5);
+  chip('HARRY KANE',1);
+  if(u<1){g.fillStyle=`rgba(80,0,10,${.25*(1-u)})`;g.fillRect(0,212,W,1300);}
+  spot(W/2,u);
+  goldBall(W/2+300,1000-200*CAM(lt-m),110,u,t*.6);
+  bust('kane',W/2,1510,980,1,u<1?`grayscale(${1-u}) brightness(${.55+.45*u})`:null);
+  confetti(lt-m-.2);
+  // MAUDIT barré, puis BALLON D'OR
+  rise(['MAUDIT.'],90,450,150,C.red,0,lt,{align:'left'});
+  const k=ease((lt-m+.1)/.35);if(k>0){g.fillStyle=GOLD;g.fillRect(80,398,k*560,16);}
+  rise(['BALLON D\'OR.'],90,600,120,GOLD,m,lt,{align:'left'});
+ },
+ // 2. Tottenham : 280 buts, 0 trophée
+ s2(lt,d,t){
+  chip('TOTTENHAM · 2004 → 2023',1);
+  face('kane',220,470,130,{ring:SPURS,lw:12});
+  pill('ARRIVÉ À 11 ANS',220,660,SPURS,'#fff',ease((lt-.2)/.3),28);
+  const n=Math.round(280*eio(cl((lt-d*.18)/(d*.32),0,1)));
+  txt(String(n),720,520,F(900,190),C.ink);txt('BUTS',720,580,F(800,32,'JetBrains Mono'),C.mute);
+  pill('RECORD DU CLUB',720,670,GOLD,C.night,ease((lt-d*.5)/.25),28);
+  const ca=ease((lt-d*.6)/.35);cabinet(190,780,700,620,ca);
+  if(ca>0){g.save();g.globalAlpha=ca;for(let i=0;i<14;i++){const x=220+(i*97)%640,y=820+((i*61+t*20)%560);g.fillStyle='rgba(255,255,255,.18)';g.fillRect(x,y,3,3);}g.restore();g.globalAlpha=1;}
+  const z=UI(lt-d*.8);if(z>0){g.save();g.translate(W/2,1170);g.scale(z,z);txt('0',0,40,F(900,260),C.red);g.restore();txt('TROPHÉE',W/2,1290,F(800,34,'JetBrains Mono'),C.mute,'center',cl(z,0,1));}
+ },
+ // 3. Cinq finales, cinq défaites
+ s3(lt,d,t){
+  chip('LES FINALES',1);
+  const R=[['2015','COUPE DE LA LIGUE','CONTRE CHELSEA',SPURS,.14],['2019','LIGUE DES CHAMPIONS','CONTRE LIVERPOOL',SPURS,.32],['2021','COUPE DE LA LIGUE','CONTRE MAN CITY',SPURS,.52],
+    ['2021','EURO · ANGLETERRE','CONTRE L\'ITALIE (T.A.B.)','#fff',.7],['2024','EURO · ANGLETERRE','CONTRE L\'ESPAGNE','#fff',.84]];
+  g.save();
+  R.forEach(([y,c,o,col,f],i)=>{const a=UI(lt-d*f+.25);const t0=d*f;
+    card(90,330+i*172,900,150,a,(x,yy)=>{g.fillStyle=col;g.fillRect(x,yy+20,8,110);
+      txt(y,x+40,yy+92,F(900,56),C.ink,'left');txt(c,x+210,yy+68,F(900,38),C.ink,'left');txt(o,x+210,yy+110,F(500,26,'JetBrains Mono'),C.mute,'left');});
+    if(a>0)stamp('PERDUE',870,415+i*172,C.red,-.08,lt-t0-.05,30);});
+  g.restore();
+  const m=Math.min(5,R.filter(r=>lt>d*r[4]).length);
+  for(let i=0;i<m;i++)medal(W/2-200+i*100,1330+20*(1-UI(lt-d*R[i][4]-.1)),34,cl(UI(lt-d*R[i][4]-.1),0,1));
+  txt(`${m} FINALE${m>1?'S':''} · 0 TITRE`,W/2,1450,F(900,40),C.ink,'center',ease((lt-d*.2)/.3));
+ },
+ // 4. Le Bayern : 11 titres d'affilée… et pas le 12e
+ s4(lt,d,t){
+  chip('BAYERN MUNICH · 2023',1);
+  rise(['11 TITRES','D\'AFFILÉE.'],90,430,92,(i)=>i<2?GOLD:C.ink,d*.22,lt,{align:'left'});
+  for(let i=0;i<12;i++){const x=150+(i%6)*156,y=760+Math.floor(i/6)*230,yr=String(13+i);
+    if(i<11){const a=UI(lt-d*(.3+i*.025));if(a>0){cup(x,y,.55*cl(a,0,1.1),cl(a,0,1));txt('20'+yr,x,y+46,F(500,24,'JetBrains Mono'),C.mute,'center',cl(a,0,1));}}
+    else{const a=ease((lt-d*.6)/.3);if(a>0){g.save();g.globalAlpha=a;g.setLineDash([10,8]);g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=3;rr(x-60,y-130,120,130,14);g.stroke();g.setLineDash([]);
+      txt('2024',x,y+46,F(800,24,'JetBrains Mono'),C.red,'center',a);g.restore();cross(x,y-65,34,lt-d*.8);}}}
+  const k=CAM(lt-.1);face('kane',lerp(-150,W/2,k),1300,120,{ring:lt>d*.15?BAYERN:SPURS,lw:12});
+  stamp('PAS CETTE ANNÉE',W/2,1130,C.red,-.06,lt-d*.86,44);
+ },
+ // 5. La malédiction Kane
+ s5(lt,d,t){
+  chip('SUR INTERNET',1);
+  const gl=(Math.sin(t*37)>.85)?1:0;
+  g.save();if(gl)g.translate(14*Math.sin(t*91),0);face('kane',W/2,860,210,{ring:C.red,lw:14,filter:'grayscale(.6) contrast(1.15)'});g.restore();
+  if(gl){g.fillStyle='rgba(255,77,94,.25)';g.fillRect(W/2-210,820+30*Math.sin(t*50),420,18);}
+  const P=[['MAUDIT',240,560,-.1],['0 TROPHÉE',830,600,.08],['LE CHAT NOIR',200,1150,.06],['TOUCHÉ PAR KANE = FINALE PERDUE',W/2,1280,-.03],['RIP LE BAYERN',840,1120,-.07]];
+  P.forEach(([s,x,y,r],i)=>{const a=UI(lt-d*(.12+i*.08));if(a<=0)return;g.save();g.translate(x,y+8*Math.sin(t*2+i));g.rotate(r);g.scale(cl(a,0,1.1),cl(a,0,1.1));
+    g.font=F(900,34);const w=g.measureText(s).width+50;rr(-w/2,-38,w,66,16);g.fillStyle=C.panel;g.fill();g.lineWidth=3;g.strokeStyle='rgba(255,77,94,.7)';g.stroke();txt(s,0,10,F(900,34),C.ink);g.restore();});
+  stamp('LA MALÉDICTION KANE',W/2,470,C.red,-.05,lt-d*.55,56);
+ },
+ // 6. Il marque… et mai 2025 : le premier trophée
+ s6(lt,d,t){
+  const m=d*.55,o=1-ease((lt-m)/.25);
+  chip(lt<m?'IL NE RÉPOND PAS':'MAI 2025',1);
+  if(o>0){g.save();g.globalAlpha=o;
+    ['IL MARQUE.','ENCORE.','ET ENCORE.'].forEach((s,i)=>{const t0=d*(.18+i*.1);rise([s],W/2,560+i*150,110,i?GOLD:C.ink,t0,lt);
+      const u=ease((lt-t0)/.3);if(u>0&&u<1){g.beginPath();g.arc(lerp(-60,W/2+300,u),lerp(1300,600+i*150,u),22,0,7);g.fillStyle='#fff';g.fill();}});
+    face('kane',W/2,1220,110,{ring:BAYERN,lw:12});g.restore();g.globalAlpha=1;}
+  if(lt>m-.1){const p=CAM(lt-m);spot(W/2,cl(p,0,1));
+    plate(W/2,lerp(260,640,p),220,cl(p*1.5,0,1));
+    confetti(lt-m-.3,[SILVER,'#fff',BAYERN,GOLD]);
+    face('kane',W/2,1000,150,{ring:GOLD,lw:12,a:ease((lt-m-.2)/.3)});
+    rise(['ENFIN.'],W/2,1290,120,GOLD,m+.25,lt);
+    pill('1ER TROPHÉE DE SA CARRIÈRE · 31 ANS',W/2,1430,GOLD,C.night,ease((lt-d*.86)/.25),28);}
+ },
+ // 7. Le barrage cède : la vitrine se remplit
+ s7(lt,d,t){
+  chip('SAISON 2025-26',1);
+  cabinet(140,330,800,560,1);
+  const it=[['CHAMPIONNAT',290,.12],['COUPE',W/2,.22],['SUPERCOUPE',790,.32]];
+  it.forEach(([s,x,f],i)=>{const p=CAM(lt-d*f+.15);if(p<=0)return;const y=lerp(150,846,p);
+    if(i===0)plate(x,y-60,95,cl(p*1.4,0,1));else cup(x,y,i===1?.95:.72,cl(p*1.4,0,1));
+    txt(s,x,940,F(800,26,'JetBrains Mono'),GOLD,'center',ease((lt-d*f-.2)/.25));});
+  // barres : Messi 2011-12 contre Kane 2025-26
+  const b=ease((lt-d*.55)/.5);if(b>0){g.save();g.globalAlpha=cl(b*2,0,1);
+    txt('BUTS EN UNE SAISON',90,1080,F(800,28,'JetBrains Mono'),C.mute,'left');
+    rr(90,1110,900*b,90,18);g.fillStyle='#4B5370';g.fill();txt('MESSI · 2011-12',120,1168,F(900,36),C.ink,'left');txt('82',960,1170,F(900,48),C.ink,'right',b);
+    rr(90,1230,900*b*73/82,90,18);g.fillStyle=GOLD;g.fill();txt('KANE · 2025-26',120,1288,F(900,36),C.night,'left');txt('70+',90+900*b*73/82-24,1290,F(900,48),C.night,'right',b);
+    g.restore();g.globalAlpha=1;}
+  pill('SEUL MESSI A FAIT MIEUX',W/2,1440,C.ink,C.night,ease((lt-d*.84)/.25),30);
+ },
+ // 8. Le podium du Ballon d'Or
+ s8(lt,d,t){
+  chip('BALLON D\'OR 2026 · LE PODIUM',1);
+  const blocks=[[W/2,1130,300,'1',GOLD,0],[230,1250,260,'2',SILVER,.38],[850,1300,260,'3','#D08A4E',.55]];
+  blocks.forEach(([x,y,w,n,col,f])=>{const a=UI(lt-d*f);if(a<=0)return;const h=(1510-y)*cl(a,0,1);
+    g.fillStyle=C.panel;g.fillRect(x-w/2,1510-h,w,h);g.fillStyle=col;g.fillRect(x-w/2,1510-h,w,10);txt(n,x,1510-h+110,F(900,90),col,'center',cl(a,0,1));});
+  const ka=UI(lt-.1);face('kane',W/2,1000,135,{ring:GOLD,lw:12,a:cl(ka,0,1),sc:cl(ka,0,1)});
+  goldBall(W/2,lerp(260,700,CAM(lt-.25)),115,ease((lt-.2)/.3),t*.7);
+  const ma=UI(lt-d*.38);face('mbappe',230,1130,105,{ring:SILVER,lw:10,a:cl(ma,0,1),sc:cl(ma,0,1)});
+  const ya=UI(lt-d*.55);face('yamal',850,1180,105,{ring:'#D08A4E',lw:10,a:cl(ya,0,1),sc:cl(ya,0,1)});
+  txt('MBAPPÉ',230,1010,F(900,30),C.ink,'center',cl(ma,0,1));txt('YAMAL',850,1060,F(900,30),C.ink,'center',cl(ya,0,1));
+  pill('1ER ANGLAIS DEPUIS 2001',W/2,420,GOLD,C.night,ease((lt-d*.75)/.25),28);
+  confetti(lt-d*.75);
+ },
+ // 9. Londres, la ville où il n'avait rien gagné
+ s9(lt,d,t){
+  chip('LONDRES · 26 OCTOBRE',1);
+  g.beginPath();g.arc(860,420,60,0,7);g.fillStyle='#EFE6D2';g.fill();g.beginPath();g.arc(885,402,54,0,7);g.fillStyle=C.night;g.fill();
+  for(let i=0;i<16;i++){g.globalAlpha=(.4+.6*Math.abs(Math.sin(t*1.3+i)))*.8;g.fillStyle=C.ink;g.fillRect((i*211)%960+60,280+(i*97)%300,4,4);}g.globalAlpha=1;
+  skyline(1510,1,t);
+  rise(['LA VILLE OÙ IL','N\'AVAIT JAMAIS','RIEN GAGNÉ.'],90,560,80,(i)=>i<6?C.ink:GOLD,d*.3,lt,{align:'left',out:d*.58});
+  card(90,520,900,300,UI(lt-d*.62),(x,y)=>{face('kane',x+130,y+150,90,{ring:GOLD,lw:9});
+    txt('SUR SCÈNE, HIER SOIR',x+260,y+90,F(500,26,'JetBrains Mono'),C.mute,'left');
+    txt('« THANK YOU TO',x+260,y+155,F(900,44),C.ink,'left');txt('TOTTENHAM HOTSPUR. »',x+260,y+212,F(900,44),GOLD,'left');
+    txt('MERCI À TOTTENHAM',x+260,y+262,F(600,26),C.mute,'left');});
+ },
+ // 10. 14 ans… 17 mois
+ s10(lt,d,t){
+  chip('LE ROI SANS COURONNE',1);
+  bust('kane',W/2,1510,900,.22,'grayscale(.3)');
+  const a=UI(lt-d*.06);if(a>0){g.save();g.globalAlpha=cl(a,0,1);g.translate(0,(1-a)*50);
+    plate(220,560,80,1);txt('14 ANS',360,585,F(900,120),C.ink,'left');txt('POUR SON 1ER TROPHÉE',366,640,F(800,30,'JetBrains Mono'),C.mute,'left');g.restore();g.globalAlpha=1;}
+  const b=UI(lt-d*.52);if(b>0){g.save();g.globalAlpha=cl(b,0,1);g.translate(0,(1-b)*50);
+    goldBall(220,980,72,1,t*.7);txt('17 MOIS',360,1005,F(900,120),GOLD,'left');txt('POUR LE PLUS GRAND',366,1060,F(800,30,'JetBrains Mono'),C.mute,'left');g.restore();g.globalAlpha=1;}
+  g.fillStyle='rgba(255,255,255,.12)';g.fillRect(140,780,800,3);
+ },
+ // 11. La question
+ s11(lt,d,t){
+  chip('ET TOI ?',1);
+  face('kane',330,720,170,{ring:GOLD,lw:12});face('mbappe',750,720,170,{ring:SILVER,lw:12});
+  const v=UI(lt-.15);if(v>0){g.save();g.translate(W/2,720);g.rotate(-.12);g.scale(v,v);rr(-62,-46,124,92,14);g.fillStyle=C.night;g.fill();g.lineWidth=6;g.strokeStyle=GOLD;g.stroke();txt('VS',0,20,F(900,56),GOLD);g.restore();}
+  const b1=UI(lt-d*.25),b2=UI(lt-d*.42);
+  if(b1>0){g.save();g.translate(W/2,1050);g.scale(.9+.1*b1,.9+.1*b1);g.globalAlpha=cl(b1,0,1);rr(-400,-70,800,130,30);g.fillStyle=GOLD;g.fill();txt('BALLON D\'OR MÉRITÉ',0,18,F(900,46),C.night);g.restore();}
+  if(b2>0){g.save();g.translate(W/2,1210);g.scale(.9+.1*b2,.9+.1*b2);g.globalAlpha=cl(b2,0,1);rr(-400,-70,800,130,30);g.fillStyle='#EDEBFF';g.fill();txt('C\'ÉTAIT L\'ANNÉE DE MBAPPÉ',0,18,F(900,44),C.night);g.restore();}
+  g.globalAlpha=1;
+  txt('RÉPONDS EN COMMENTAIRE ↓',W/2,1380,F(800,34,'JetBrains Mono'),C.ink,'center',ease((lt-d*.7)/.3));
+ }
+}};
+makeRender(SCENE);
+const _setup=window.setup;
+window.setup=async function(tl){for(const id in PL){const im=await loadImg(PL[id].src);if(im){IMG[id]=im;BUST[id]=makeBust(im);}}return _setup(tl);};
+</script></body></html>
