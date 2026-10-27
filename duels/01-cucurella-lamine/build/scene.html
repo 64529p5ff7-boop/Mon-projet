@@ -1,0 +1,280 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../../../histoires-insolites/core/core.js"></script>
+<script>
+// Duel n°1 : Cucurella contre Lamine Yamal (Clasico, 25/10/2026).
+// Angle : Cucurella connaît Lamine par cœur (Espagne) et arrive au Clasico avec un « mode d'emploi » en 4 règles.
+const REAL='#EDEBFF',GOLD='#E9C46A',BAR1='#A50044',BAR2='#2A4BD7',GREEN='#4BE08A',PITCH1='#0F2A22',PITCH2='#12322A';
+let T={};
+
+// ---------- Photos des joueurs ----------
+// Détourages dans photos/<id>.png. Face = centre et rayon du visage dans l'image (pixels de l'image).
+// Sans fichier : médaillon aux initiales, aux couleurs du joueur.
+const PL={
+ lamine:{src:'photos/lamine.png',fx:330,fy:360,fr:175,ini:'LY',col:BAR1,col2:BAR2},
+ cucurella:{src:'photos/cucurella.png',fx:420,fy:230,fr:150,ini:'MC',col:REAL,col2:GOLD},
+ mendes:{src:'photos/mendes.png',fx:0,fy:0,fr:0,ini:'NM',col:'#C8102E',col2:'#046A38'},
+ mbappe:{src:'photos/mbappe.png',fx:0,fy:0,fr:0,ini:'KM',col:REAL,col2:GOLD},
+ mourinho:{src:'photos/mourinho.png',fx:0,fy:0,fr:0,ini:'JM',col:'#2B2F45',col2:GOLD},
+};
+const IMG={},BUST={};
+function loadImg(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src;});}
+// Buste : le bas de l'image s'efface en fondu (cache aussi les bords flous du détourage).
+function makeBust(im){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);
+  x.globalCompositeOperation='destination-in';const gr=x.createLinearGradient(0,im.height*.45,0,im.height*.82);gr.addColorStop(0,'#000');gr.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gr;x.fillRect(0,0,im.width,im.height);return c;}
+
+function face(id,x,y,r,{a=1,ring=null,lw=null,dim=0,sc=1}={}){if(a<=0||r<=0)return;const p=PL[id],im=IMG[id];
+  g.save();g.globalAlpha=a;g.translate(x,y);g.scale(sc,sc);
+  g.beginPath();g.arc(0,0,r,0,7);const bg=g.createLinearGradient(0,-r,0,r);bg.addColorStop(0,p.col2);bg.addColorStop(1,p.col);g.fillStyle=bg;g.fill();
+  g.save();g.clip();
+  if(im&&p.fr){const k=r/p.fr*.82;g.drawImage(im,-p.fx*k,-p.fy*k+r*.12,im.width*k,im.height*k);}
+  else txt(p.ini,0,r*.36,F(900,r*.95),'#fff','center');
+  if(dim>0){g.fillStyle=`rgba(11,14,31,${dim})`;g.fillRect(-r,-r,2*r,2*r);}
+  g.restore();
+  g.beginPath();g.arc(0,0,r,0,7);g.lineWidth=lw||Math.max(3,r*.09);g.strokeStyle=ring||p.col;g.stroke();
+  g.restore();g.globalAlpha=1;}
+function bust(id,x,y,h,a=1,flip=false){const b=BUST[id];if(!b||a<=0)return;const w=b.width*h/b.height;
+  g.save();g.globalAlpha=a;g.translate(x,y);if(flip)g.scale(-1,1);g.drawImage(b,-w/2,-h,w,h);g.restore();g.globalAlpha=1;}
+
+// ---------- Terrain en perspective (mètres → écran) ----------
+// px : largeur (-34 gauche → 34 ligne de touche droite), pz : profondeur (0 près → 52 ligne de but).
+const PJ={D:30,A:37846,yH:238,B:1020,cx:20};
+function P(px,pz){const k=1/(pz+PJ.D);return [W/2+(px-PJ.cx)*PJ.B*k,PJ.yH+PJ.A*k,PJ.B*k];}
+function pline(pts,col,lw=3,dash=null){g.beginPath();pts.forEach(([a,b],i)=>{const [x,y]=P(a,b);i?g.lineTo(x,y):g.moveTo(x,y);});g.strokeStyle=col;g.lineWidth=lw;if(dash)g.setLineDash(dash);g.stroke();g.setLineDash([]);}
+function ppoly(pts,col){g.beginPath();pts.forEach(([a,b],i)=>{const [x,y]=P(a,b);i?g.lineTo(x,y):g.moveTo(x,y);});g.closePath();g.fillStyle=col;g.fill();}
+function pitch(a=1){if(a<=0)return;g.save();g.globalAlpha=a;
+  for(let i=0;i<12;i++)ppoly([[-40,i*5-6],[34,i*5-6],[34,i*5-1],[-40,i*5-1]],i%2?PITCH1:PITCH2);
+  ppoly([[34,-6],[40,-6],[40,58],[34,58]],'#0B1F19');
+  const L='rgba(255,255,255,.55)';
+  pline([[34,-6],[34,52]],L,4);pline([[-40,52],[34,52]],L,4);
+  pline([[20.16,52],[20.16,35.5],[-20.16,35.5],[-20.16,52]],L,3);pline([[9.16,52],[9.16,46.5],[-9.16,46.5],[-9.16,52]],L,3);
+  const arc=[];for(let i=0;i<=20;i++){const u=-.93+1.86*i/20;arc.push([9.15*Math.sin(u),41-9.15*Math.cos(u)]);}pline(arc.filter(p=>p[1]<35.5),L,3);
+  const [sx,sy]=P(0,41);g.beginPath();g.arc(sx,sy,4,0,7);g.fillStyle=L;g.fill();
+  // but
+  const [lx,ly,ls]=P(-3.66,52),[rx,ry]=P(3.66,52),h=2.44*ls;g.strokeStyle='#fff';g.lineWidth=5;g.beginPath();g.moveTo(lx,ly);g.lineTo(lx,ly-h);g.lineTo(rx,ry-h);g.lineTo(rx,ry);g.stroke();
+  g.strokeStyle='rgba(255,255,255,.18)';g.lineWidth=1.5;for(let i=1;i<8;i++){const x=lerp(lx,rx,i/8);g.beginPath();g.moveTo(x,ly-h);g.lineTo(x,ly);g.stroke();}
+  // fondu vers le haut (le terrain se perd dans la nuit)
+  const fg=g.createLinearGradient(0,600,0,820);fg.addColorStop(0,C.night);fg.addColorStop(1,'rgba(11,14,31,0)');g.fillStyle=fg;g.fillRect(0,212,W,608);
+  g.restore();g.globalAlpha=1;}
+// Jeton joueur : anneau au sol + tige + médaillon visage au-dessus.
+function token(id,px,pz,col,{a=1,pulse=0,lean=0,r=78,tag=null,tagCol=C.sun,tagA=1}={}){if(a<=0)return;const [x,y,s]=P(px,pz),k=s/22;
+  g.save();g.globalAlpha=a;
+  g.beginPath();g.ellipse(x,y,48*k,16*k,0,0,7);g.fillStyle='rgba(0,0,0,.45)';g.fill();
+  for(let i=0;i<2;i++){g.beginPath();g.ellipse(x,y,(54+i*18)*k,(18+i*6)*k,0,0,7);g.strokeStyle=col;g.globalAlpha=a*(i?.4:1);g.lineWidth=(i?3:6)*k;g.stroke();}
+  if(pulse>0){const q=(pulse%1);g.beginPath();g.ellipse(x,y,(54+90*q)*k,(18+30*q)*k,0,0,7);g.strokeStyle=col;g.globalAlpha=a*(1-q);g.lineWidth=5*k;g.stroke();}
+  g.globalAlpha=a;const hx=x+Math.sin(lean)*150*k,hy=y-Math.cos(lean)*150*k;
+  g.strokeStyle=col;g.lineWidth=5*k;g.beginPath();g.moveTo(x,y);g.lineTo(hx,hy+r*k);g.stroke();
+  g.restore();
+  face(id,hx,hy,r*k,{a,ring:col});
+  if(tag&&tagA>0)pill(tag,hx,hy-r*k-22,tagCol,C.night,a*tagA,26);
+  return [hx,hy];}
+function ball(px,pz,a=1){if(a<=0)return;const [x,y,s]=P(px,pz),k=s/22;g.globalAlpha=a;g.beginPath();g.arc(x,y-12*k,12*k,0,7);g.fillStyle='#fff';g.fill();g.fillStyle=C.night;g.beginPath();g.arc(x,y-12*k,4.5*k,0,7);g.fill();g.globalAlpha=1;}
+// Flèche courbe au sol (quadratique), tracée progressivement de 0 à u.
+function parrow(p0,p1,p2,u,col,lw=7,dash=[18,12]){if(u<=0)return;const pts=[];const n=40;for(let i=0;i<=n*u;i++){const s=i/n;pts.push([(1-s)*(1-s)*p0[0]+2*(1-s)*s*p1[0]+s*s*p2[0],(1-s)*(1-s)*p0[1]+2*(1-s)*s*p1[1]+s*s*p2[1]]);}
+  if(pts.length<2)return;pline(pts,col,lw,dash);const [ax,ay]=P(...pts[pts.length-1]),[bx,by]=P(...pts[pts.length-2]),an=Math.atan2(ay-by,ax-bx);
+  g.save();g.translate(ax,ay);g.rotate(an);g.beginPath();g.moveTo(10,0);g.lineTo(-16,-13);g.lineTo(-16,13);g.closePath();g.fillStyle=col;g.fill();g.restore();}
+function cross(x,y,s,a,col=C.red){if(a<=0)return;const k=UI(a);g.save();g.translate(x,y);g.scale(k,k);g.strokeStyle=col;g.lineWidth=12;g.lineCap='round';g.beginPath();g.moveTo(-s,-s);g.lineTo(s,s);g.moveTo(s,-s);g.lineTo(-s,s);g.stroke();g.restore();}
+// Bandeau de règle : « RÈGLE 01 / 04 » + 4 points de progression + titre.
+function ruleHead(n,lines,lt,cols){chip(`RÈGLE 0${n} / 04`,1);
+  for(let i=0;i<4;i++){g.beginPath();g.arc(W-130-(3-i)*34,279,9,0,7);g.fillStyle=i<n?C.sun:'rgba(255,255,255,.18)';g.fill();}
+  rise(lines,90,420,82,cols,0,lt,{align:'left'});}
+function card(x,y,w,h,a,draw){if(a<=0)return;const p=cl(a,0,1);g.save();g.globalAlpha=p;g.translate(0,(1-a)*60);rr(x,y,w,h,24);g.fillStyle=C.panel;g.fill();g.lineWidth=2;g.strokeStyle='rgba(255,255,255,.08)';g.stroke();draw(x,y,w,h);g.restore();g.globalAlpha=1;}
+function check(x,y,a,col=GREEN){if(a<=0)return;g.save();g.globalAlpha=cl(a,0,1);rr(x,y-30,40,40,10);g.fillStyle=col;g.fill();g.strokeStyle=C.night;g.lineWidth=6;g.lineCap='round';g.beginPath();g.moveTo(x+9,y-10);g.lineTo(x+17,y-2);g.lineTo(x+31,y-20);g.stroke();g.restore();}
+function shake(lt,t0,amp=12){const k=lt-t0;if(k<0||k>.3)return;const f=amp*(1-k/.3);g.translate(f*Math.sin(k*90),f*Math.cos(k*70));}
+
+const SCENE={label:'DUEL N°1 · CLASICO',
+ init(){},
+ sfx(){const ev=[];const s=id=>TL.segs.find(x=>x.id===id),at=(id,f)=>s(id).start+s(id).dur*f;
+  TL.segs.forEach((x,i)=>{if(i)ev.push([x.start-.12,'whoosh']);});
+  ev.push([at('s1',.15),'thump'],[at('s2',.05),'pop']);
+  for(let i=0;i<5;i++)ev.push([at('s2',.12+i*.1),'kick']);
+  ev.push([at('s2',.78),'stamp'],[at('s3',.08),'pop'],[at('s3',.12),'pop']);[.5,.62,.74].forEach(f=>ev.push([at('s3',f),'tick']));
+  ev.push([at('s4',.15),'pop'],[at('s4',.55),'thump'],[at('s4',.8),'stamp']);
+  ev.push([at('s5',.62),'stamp'],[at('s6',.3),'whoosh'],[at('s7',.18),'kick'],[at('s7',.45),'thump'],[at('s7',.75),'stamp']);
+  ev.push([at('s8',.3),'pop'],[at('s8',.85),'stamp']);
+  [.12,.24,.36,.48].forEach(f=>ev.push([at('s9',f),'thump']));ev.push([at('s9',.62),'pop'],[at('s9',.8),'pop']);
+  ev.push([at('s10',.05),'pop'],[at('s10',.3),'pop']);[.58,.68,.78,.88].forEach(f=>ev.push([at('s10',f),'tick']));
+  ev.push([at('s11',.3),'pop'],[at('s11',.45),'pop'],[s('s11').start+s('s11').dur+.4,'pop']);
+  return ev;},
+ S:{
+ // 1. La promesse (la 1re image sert de miniature : tout est déjà en place)
+ s1(lt,d,t){lt+=1.1;
+  chip('JUIN 2026 · LAMINE YAMAL',1);
+  // fond partagé en diagonale : Real à gauche, Barça à droite
+  const k=CAM(lt-.05);g.save();g.beginPath();g.moveTo(0,640);g.lineTo(W*.58,640);g.lineTo(W*.42,1500);g.lineTo(0,1500);g.closePath();g.clip();
+  const gl=g.createLinearGradient(0,640,0,1500);gl.addColorStop(0,'rgba(237,235,255,.16)');gl.addColorStop(1,'rgba(237,235,255,0)');g.fillStyle=gl;g.fillRect(0,640,W,860);
+  bust('cucurella',lerp(-200,300,k),1500,820,1);g.restore();
+  g.save();g.beginPath();g.moveTo(W*.58,640);g.lineTo(W,640);g.lineTo(W,1500);g.lineTo(W*.42,1500);g.closePath();g.clip();
+  const gr=g.createLinearGradient(W*.5,640,W,1500);gr.addColorStop(0,'rgba(165,0,68,.45)');gr.addColorStop(1,'rgba(42,75,215,.35)');g.fillStyle=gr;g.fillRect(0,640,W,860);
+  bust('lamine',lerp(W+200,790,k),1500,840,1);g.restore();
+  g.strokeStyle=C.sun;g.lineWidth=8;g.beginPath();g.moveTo(W*.58,640);g.lineTo(W*.42,1500);g.stroke();
+  const v=UI(lt-.35);g.save();g.translate(W/2,1070);g.rotate(-.18);g.scale(v,v);rr(-70,-50,140,100,14);g.fillStyle=C.night;g.fill();g.lineWidth=6;g.strokeStyle=C.sun;g.stroke();txt('VS',0,22,F(900,62),C.sun);g.restore();
+  pill('CUCURELLA',230,1450,REAL,C.night,ease(lt-.5),30);pill('LAMINE',850,1450,BAR1,'#fff',ease(lt-.5),30);
+  rise(['« CUCURELLA,','JE VAIS LE MANGER. »'],90,420,84,(i)=>i<1?C.ink:C.sun,0,lt,{align:'left'});
+  txt('SOURCE : COPE, JUIN 2026',90,580,F(500,24,'JetBrains Mono'),C.mute,'left',ease(lt-.6));
+ },
+ // 2. Le verdict
+ s2(lt,d,t){
+  chip('DIMANCHE · CAMP NOU · CLASICO',1);
+  // tableau de score
+  const sb=UI(lt);if(sb>0){g.save();g.globalAlpha=cl(sb,0,1);g.translate(0,(1-sb)*-40);rr(140,350,800,150,28);g.fillStyle=C.panel;g.fill();
+    txt('BARÇA',300,445,F(900,52),BAR1==='#A50044'?'#FF5C8A':BAR1);txt('1 – 2',W/2,452,F(900,76),C.ink);txt('REAL',780,445,F(900,52),REAL);g.restore();g.globalAlpha=1;}
+  // le but, et 5 tirs qui passent à côté
+  const gx=W/2,gy=760;g.strokeStyle='#fff';g.lineWidth=8;g.beginPath();g.moveTo(gx-230,gy+120);g.lineTo(gx-230,gy);g.lineTo(gx+230,gy);g.lineTo(gx+230,gy+120);g.stroke();
+  g.strokeStyle='rgba(255,255,255,.15)';g.lineWidth=2;for(let i=1;i<8;i++){g.beginPath();g.moveTo(gx-230+i*57.5,gy);g.lineTo(gx-230+i*57.5,gy+120);g.stroke();}
+  const ends=[[gx-330,700],[gx+300,640],[gx-120,610],[gx+360,800],[gx-300,860]];
+  ends.forEach((e,i)=>{const t0=d*(.12+i*.1),u=ease((lt-t0)/.35);if(u<=0)return;const sx=W/2+(i-2)*60,sy=1330;g.globalAlpha=1-.75*ease((lt-d*.74)/.3);
+    g.strokeStyle='rgba(255,182,72,.8)';g.lineWidth=5;g.setLineDash([14,10]);g.beginPath();g.moveTo(sx,sy);g.quadraticCurveTo((sx+e[0])/2+(i%2?80:-80),(sy+e[1])/2,lerp(sx,e[0],u),lerp(sy,e[1],u));g.stroke();g.setLineDash([]);
+    if(u>=1)cross(e[0],e[1],18,lt-t0-.35);g.globalAlpha=1;});
+  face('lamine',W/2,1380,70,{ring:BAR1,dim:ease((lt-d*.6)/.4)*.35});
+  const n=Math.min(5,Math.floor(cl((lt-d*.12)/(d*.5),0,1)*5+(lt>d*.52?1:0)));
+  txt(String(n),300,1210,F(900,170),C.ink);txt('TIRS',300,1255,F(800,30,'JetBrains Mono'),C.mute);
+  txt('0',780,1210,F(900,170),C.red);txt('CADRÉ',780,1255,F(800,30,'JetBrains Mono'),C.mute);
+  stamp('PROMESSE NON TENUE',W/2,990,C.red,-.06,lt-d*.78,52);
+ },
+ // 3. Ils se connaissent par cœur
+ s3(lt,d,t){
+  chip('ESPAGNE · COÉQUIPIERS',1);
+  const p=CAM(lt),sp=1-ease((lt-d*.45)/.4)*.35;
+  g.save();g.translate(W/2,820);g.scale(sp,sp);g.translate(-W/2,-820+(sp<1?-(1-sp)*600:0));
+  glow(W/2,820,420,.5,'198,11,30');
+  face('cucurella',lerp(-200,370,p),820,170,{ring:'#C60B1E'});face('lamine',lerp(W+200,710,p),820,170,{ring:'#FFC400'});
+  const lk=UI(lt-.4);if(lk>0){g.save();g.translate(W/2,820);g.scale(lk,lk);g.beginPath();g.arc(0,0,46,0,7);g.fillStyle='#FFC400';g.fill();txt('+',0,22,F(900,62),C.night);g.restore();}
+  pill('CHAMPIONS D\'EUROPE 2024',W/2,1080,'#C60B1E','#FFC400',ease((lt-d*.15)/.3),38);
+  g.restore();
+  rise(['IL LE CONNAÎT','PAR CŒUR.'],90,420,92,(i)=>i<3?C.ink:C.sun,d*.42,lt,{align:'left'});
+  // ses notes, comme un carnet
+  const notes=['GAUCHER','ADORE RENTRER DANS L\'AXE','CHERCHE LA FAUTE'];
+  notes.forEach((s,i)=>{const a=UI(lt-d*(.5+i*.12));card(110,1060+i*130,860,104,a,(x,y)=>{txt(`0${i+1}`,x+40,y+68,F(500,30,'JetBrains Mono'),C.sun,'left');txt(s,x+120,y+68,F(800,40),C.ink,'left');});});
+ },
+ // 4. Transfert + mode d'emploi
+ s4(lt,d,t){
+  chip('ÉTÉ 2026 · TRANSFERT',1);
+  const out=d*.5,o=1-ease((lt-out)/.3);
+  if(o>0){g.save();g.globalAlpha=o;
+    rr(100,640,330,120,60);g.fillStyle='#034694';g.fill();txt('CHELSEA',265,718,F(900,44),'#fff');
+    rr(650,640,330,120,60);g.fillStyle=REAL;g.fill();txt('REAL',815,718,F(900,48),C.night);
+    const u=eio((lt-.2)/1.1);parrowFlat(430,700,650,700,u);
+    face('cucurella',lerp(265,815,u),980,150,{ring:u>.9?GOLD:'#034694'});
+    g.restore();g.globalAlpha=1;}
+  if(lt>out-.1){const p=TYPO(lt-out);g.save();g.translate(W/2,1000+(1-p)*500);g.rotate(-.03*(1-p)-.02);
+    rr(-360,-430,720,860,26);g.fillStyle=C.paper;g.fill();g.fillStyle=C.night;g.fillRect(-360,-430,720,150);
+    txt('DOSSIER · CLASICO',0,-340,F(500,30,'JetBrains Mono'),C.sun);
+    txt('MODE',0,-160,F(900,130),C.night);txt('D\'EMPLOI',0,-30,F(900,130),C.night);
+    g.fillStyle=C.red;g.fillRect(-260,20,520,8);
+    txt('ARRÊTER LAMINE YAMAL',0,100,F(900,46),C.red);txt('4 RÈGLES',0,170,F(800,36,'JetBrains Mono'),'#5A5F7A');
+    face('lamine',0,310,88,{ring:BAR1});
+    g.restore();stamp('CONFIDENTIEL',W/2+170,1380,C.red,-.12,lt-d*.8,46);}
+ },
+ // 5. Règle 1 : jamais de face, fermer l'axe
+ s5(lt,d,t){
+  pitch(ease(lt/.4));ruleHead(1,['JAMAIS DE FACE.'],lt,C.ink);
+  const ax=d*.38,cl0=d*.6;
+  // zone préférée de Lamine : l'axe (jaune), puis fermée (rouge)
+  const z=ease((lt-.5)/.4),zc=ease((lt-cl0)/.3);
+  if(z>0){g.globalAlpha=.28*z;ppoly([[27,10],[8,28],[8,42],[24,26]],zc>0?`rgba(255,77,94,1)`:C.sun);g.globalAlpha=1;}
+  parrow([28,10],[16,14],[9,30],ease((lt-ax)/.6),zc>0?C.red:C.sun);
+  // orientation du corps de Cucurella : de trois-quarts, tournée vers la touche
+  const cuc=P(20,16.5);const o=ease((lt-cl0+.2)/.4);
+  if(o>0){g.save();g.globalAlpha=.35*o;g.translate(cuc[0],cuc[1]);g.scale(1,.34);g.beginPath();g.moveTo(0,0);g.arc(0,0,260*cuc[2]/22,-.9,.35);g.closePath();g.fillStyle=REAL;g.fill();g.restore();g.globalAlpha=1;}
+  token('cucurella',20,16.5,REAL,{a:ease((lt-.3)/.3),tag:o>0?'DE 3/4':null,tagCol:REAL,tagA:o});
+  token('lamine',28.5,9.5,GOLD,{tag:'PIED GAUCHE',tagA:ease((lt-.6)/.3)});ball(27.8,9.1);
+  if(zc>0){const [x,y]=P(13,21);cross(x,y,30,lt-cl0);pill('AXE FERMÉ',x,y+90,C.red,'#fff',zc,30);}
+ },
+ // 6. Règle 2 : une seule porte, la ligne (pied droit)
+ s6(lt,d,t){
+  pitch(1);ruleHead(2,['UNE SEULE PORTE :','LA LIGNE.'],lt,(i)=>i<3?C.ink:GREEN);
+  g.globalAlpha=.22;ppoly([[27,10],[8,28],[8,42],[24,26]],C.red);g.globalAlpha=1;
+  const run=ease((lt-d*.35)/(d*.45)),lz=lerp(9.5,24,run);
+  g.globalAlpha=.25*ease((lt-.3)/.4);ppoly([[29,8],[34,8],[34,36],[29,36]],GREEN);g.globalAlpha=1;
+  parrow([31,10],[31.5,22],[31.5,35],ease((lt-.3)/.7),GREEN,7);
+  const cz=lerp(16.5,27,run),cx=lerp(20,27.5,ease((lt-d*.3)/.5));
+  token('cucurella',cx,cz,REAL);
+  token('lamine',lerp(28.5,31.5,ease((lt-d*.3)/.3)),lz,GOLD,{tag:'PIED DROIT',tagCol:GREEN,tagA:ease((lt-d*.35)/.3)});ball(lerp(28.5,31.5,ease((lt-d*.3)/.3))-.6,lz+.5);
+  // jauge de danger qui retombe
+  const dv=lerp(.92,.28,ease((lt-d*.55)/.6));g.save();rr(240,1420,600,44,22);g.fillStyle='rgba(255,255,255,.08)';g.fill();
+  for(let i=0;i<20;i++){if(i/20<dv){rr(248+i*29.6,1428,24,28,6);g.fillStyle=i<8?GREEN:i<14?C.sun:C.red;g.fill();}}g.restore();
+  txt('DANGER LAMINE',W/2,1405,F(800,26,'JetBrains Mono'),C.mute);
+ },
+ // 7. Règle 3 : coller dès qu'il reçoit dos au but
+ s7(lt,d,t){
+  pitch(1);ruleHead(3,['DOS AU BUT ?','DÉJÀ COLLÉ.'],lt,(i)=>i<3?C.ink:GREEN);
+  const pass=ease((lt-d*.08)/.35),rec=d*.43,stick=CAM(lt-d*.3);
+  parrow([6,0],[12,6],[21.5,13.5],ease((lt-d*.05)/.3),'rgba(255,255,255,.8)',5,[10,10]);
+  ball(lerp(6,21.2,pass),lerp(0,13.3,pass));
+  const cz=lerp(24,16.5,stick);
+  // Cucurella arrive de derrière : dessiné d'abord pour ne pas masquer Lamine
+  token('cucurella',25.5,cz,lt>rec?GREEN:REAL,{pulse:lt>rec?(lt-rec)*1.2:0,tag:lt>rec?'COLLÉ':null,tagCol:GREEN});
+  token('lamine',22,14,GOLD,{tag:'DOS AU BUT',tagA:ease((lt-.3)/.3)});
+  // tentative de se retourner : flèche courbe barrée
+  const tr=ease((lt-d*.6)/.3);if(tr>0){const [x,y]=P(22,14);g.save();g.strokeStyle=C.sun;g.lineWidth=7;g.beginPath();g.arc(x,y-30,90,Math.PI*.9,Math.PI*(.9+1.1*tr));g.stroke();g.restore();cross(x+80,y-110,26,lt-d*.75);}
+  pill('IMPOSSIBLE DE SE RETOURNER',W/2,1440,C.red,'#fff',ease((lt-d*.78)/.3),30);
+ },
+ // 8. Règle 4 : ne jamais plonger
+ s8(lt,d,t){
+  ruleHead(4,['NE JAMAIS','PLONGER.'],lt,(i)=>i<2?C.ink:C.sun);
+  // carton jaune qui tombe… et s'arrête net
+  const cy=lerp(560,760,ease((lt-.2)/.6));g.save();g.translate(780,cy);g.rotate(.18+.05*Math.sin(lt*3));g.globalAlpha=ease((lt-.2)/.3)*(1-ease((lt-d*.5)/.3)*.6);
+  rr(-80,-115,160,230,14);g.fillStyle='#FFD43B';g.fill();txt('?',0,40,F(900,130),C.night);g.restore();g.globalAlpha=1;
+  card(90,960,900,250,UI(lt-d*.28),(x,y)=>{face('mourinho',x+110,y+125,72);txt('MOURINHO, APRÈS LE MATCH',x+215,y+82,F(500,26,'JetBrains Mono'),C.mute,'left');
+    txt('IL A TOUT TENTÉ POUR',x+215,y+140,F(900,40),C.ink,'left');txt('LE FAIRE EXPULSER.',x+215,y+192,F(900,40),C.sun,'left');});
+  const st=UI(lt-d*.82);if(st>0){face('cucurella',230,1370,70,{ring:GREEN,sc:cl(st,0,1)});}
+  stamp('IL RESTE DEBOUT',600,1370,GREEN,-.05,lt-d*.84,50);
+ },
+ // 9. Le mur… et Mbappé
+ s9(lt,d,t){
+  chip('PENDANT CE TEMPS',1);
+  // le mur = les 4 règles
+  const R=['JAMAIS DE FACE','LA LIGNE','COLLÉ','DEBOUT'];
+  R.forEach((s,i)=>{const a=UI(lt-d*(.1+i*.12));if(a<=0)return;g.save();g.translate(640,600+i*120);g.scale(1,cl(a,0,1.1));rr(-170,-52,340,104,10);g.fillStyle='#3A2E3A';g.fill();g.lineWidth=3;g.strokeStyle=C.sun;g.stroke();txt(s,0,12,F(900,32),C.ink);g.restore();});
+  const bx=430-60*Math.abs(Math.sin(Math.min(lt,d*.55)*7))*(lt>d*.12?1:0);
+  g.save();shake(lt,d*.12,8);shake(lt,d*.36,8);face('lamine',bx-120,780,90,{ring:BAR1});g.restore();
+  // Mbappé ×2
+  const m=UI(lt-d*.55);if(m>0){g.save();g.globalAlpha=cl(m,0,1);face('mbappe',300,1260,110,{ring:GOLD,sc:cl(m,0,1)});
+    txt('MBAPPÉ',470,1235,F(900,64),C.ink,'left');
+    for(let i=0;i<2;i++){const b=UI(lt-d*(.62+i*.18));if(b>0){g.save();g.translate(520+i*120,1320);g.scale(b,b);g.beginPath();g.arc(0,0,42,0,7);g.fillStyle='#fff';g.fill();g.beginPath();g.arc(0,0,15,0,7);g.fillStyle=C.night;g.fill();g.restore();}}
+    txt('×2',800,1340,F(900,80),C.sun,'left',ease((lt-d*.8)/.2));g.restore();g.globalAlpha=1;}
+ },
+ // 10. Pas nouveau : Nuno Mendes
+ s10(lt,d,t){
+  chip('ET CE N\'EST PAS NOUVEAU',1);
+  const row=(i,id,name,ctx,date,col,a)=>card(90,380+i*230,900,200,a,(x,y)=>{face(id,x+105,y+100,70,{ring:col});
+    txt(name,x+205,y+80,F(900,48),C.ink,'left');txt(ctx,x+205,y+124,F(500,26,'JetBrains Mono'),C.mute,'left');txt(date,x+205,y+160,F(500,26,'JetBrains Mono'),C.mute,'left');
+    pill('LAMINE ÉTEINT',x+760,y+60,C.red,'#fff',ease((lt-d*(i?.32:.14))/.25),22);});
+  row(0,'mendes','NUNO MENDES','PORTUGAL · FINALE LIGUE DES NATIONS','JUIN 2025',PL.mendes.col,UI(lt-.15));
+  row(1,'cucurella','CUCURELLA','REAL · CLASICO','OCTOBRE 2026',GOLD,UI(lt-d*.2));
+  rise(['MÊME PROFIL :'],90,940,64,C.sun,d*.5,lt,{align:'left'});
+  ['LATÉRAL GAUCHE','AGRESSIF','IL LE COLLE','L\'ENVOIE SUR SON PIED DROIT'].forEach((s,i)=>{const a=ease((lt-d*(.58+i*.1))/.25);check(90,1060+i*92,a);txt(s,155,1058+i*92,F(800,44),C.ink,'left',a);});
+ },
+ // 11. La question + abonnement
+ s11(lt,d,t){
+  chip('ALORS, LAMINE…',1);
+  face('lamine',W/2,760,190,{ring:BAR1});
+  const b1=UI(lt-d*.25),b2=UI(lt-d*.42);
+  if(b1>0){g.save();g.translate(W/2,1080);g.scale(.9+.1*b1,.9+.1*b1);g.globalAlpha=cl(b1,0,1);rr(-400,-70,800,130,30);g.fillStyle=GREEN;g.fill();txt('KRYPTONITE TROUVÉE',0,18,F(900,46),C.night);g.restore();}
+  if(b2>0){g.save();g.translate(W/2,1240);g.scale(.9+.1*b2,.9+.1*b2);g.globalAlpha=cl(b2,0,1);rr(-400,-70,800,130,30);g.fillStyle=C.sun;g.fill();txt('JUSTE UN MAUVAIS SOIR',0,18,F(900,46),C.night);g.restore();}
+  g.globalAlpha=1;
+  txt('RÉPONDS EN COMMENTAIRE ↓',W/2,1400,F(800,34,'JetBrains Mono'),C.ink,'center',ease((lt-d*.7)/.3));
+  const s=UI(lt-d-.3);if(s>0){g.save();g.translate(W/2,480);g.scale(.9+.1*s,.9+.1*s);g.globalAlpha=cl(s,0,1);rr(-230,-50,460,100,50);g.fillStyle=C.sun;g.fill();txt('+  ABONNE-TOI',0,16,F(900,40),C.night);g.restore();g.globalAlpha=1;}
+ }
+}};
+// Variante locale de rise() : départ à 1,35 × la taille (les accents restent cachés avant l'entrée).
+function rise(lines,x,y,size,col,t0,lt,{align='center',lh=1.08,w=900,out=null}={}){
+  g.font=F(w,size);let wi=0;
+  lines.forEach((line,li)=>{const ws=line.split(' '),sp=g.measureText(' ').width,tw=ws.reduce((a,s)=>a+g.measureText(s).width,0)+sp*(ws.length-1);
+    let cx=align==='center'?x-tw/2:align==='right'?x-tw:x;const by=y+li*size*lh;
+    ws.forEach(s=>{const mw=g.measureText(s).width,p=TYPO(lt-t0-wi*.055),o=out!==null?ease((lt-out)/.25):0;
+      g.save();g.beginPath();g.rect(cx-6,by-size*1.0,mw+12,size*1.28);g.clip();
+      const dy=(1-p)*size*1.35-o*size*1.35;const col_=typeof col==='function'?col(wi,s):col;
+      g.font=F(w,size);g.fillStyle=col_;g.textAlign='left';g.fillText(s,cx,by+dy);g.restore();cx+=mw+sp;wi++;});});
+}
+// flèche plate (écran) pour le transfert
+function parrowFlat(x0,y0,x1,y1,u){if(u<=0)return;const x=lerp(x0+20,x1-20,u);g.strokeStyle=C.sun;g.lineWidth=8;g.setLineDash([16,12]);g.beginPath();g.moveTo(x0+20,y0);g.lineTo(x,y1);g.stroke();g.setLineDash([]);
+  g.beginPath();g.moveTo(x+14,y1);g.lineTo(x-12,y1-14);g.lineTo(x-12,y1+14);g.closePath();g.fillStyle=C.sun;g.fill();}
+makeRender(SCENE);
+// Précharge les photos avant le premier rendu.
+const _setup=window.setup;
+window.setup=async function(tl){for(const id in PL){const im=await loadImg(PL[id].src);if(im){IMG[id]=im;BUST[id]=makeBust(im);}}return _setup(tl);};
+</script></body></html>

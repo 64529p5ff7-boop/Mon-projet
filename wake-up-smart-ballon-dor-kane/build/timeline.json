@@ -1,0 +1,284 @@
+{
+ "total": 86.24,
+ "segs": [
+  {
+   "id": "s1",
+   "say": "Pendant des années, on a dit qu'il était maudit. Hier soir… il est devenu le meilleur joueur du monde.",
+   "cap": "Pendant des années, on a dit qu'il était maudit. Hier soir… il est devenu le meilleur joueur du monde.",
+   "dur": 5.907,
+   "start": 0.4,
+   "parts": [
+    [
+     0.4,
+     2.828
+    ],
+    [
+     3.386,
+     4.029
+    ],
+    [
+     4.543,
+     6.307
+    ]
+   ]
+  },
+  {
+   "id": "s2",
+   "say": "Harry Kane. Arrivé à Tottenham à onze ans. Deux cent quatre-vingts buts, meilleur buteur de l'histoire du club. Et dans la vitrine… zéro trophée.",
+   "cap": "Harry Kane. Arrivé à Tottenham à 11 ans. 280 buts, meilleur buteur de l'histoire du club. Et dans la vitrine… 0 trophée.",
+   "dur": 8.76,
+   "start": 6.822,
+   "parts": [
+    [
+     6.822,
+     7.507
+    ],
+    [
+     8.012,
+     9.627
+    ],
+    [
+     9.926,
+     13.208
+    ],
+    [
+     13.56,
+     14.457
+    ],
+    [
+     14.816,
+     15.582
+    ]
+   ]
+  },
+  {
+   "id": "s3",
+   "say": "Pourtant, il y est allé, en finale. Deux mille quinze : perdue. Deux mille dix-neuf, la Ligue des champions : perdue. Deux mille vingt et un : perdue. Avec l'Angleterre, deux finales de l'Euro : perdues.",
+   "cap": "Pourtant, il y est allé, en finale. 2015 : perdue. 2019, la Ligue des champions : perdue. 2021 : perdue. Avec l'Angleterre, deux finales de l'Euro : perdues.",
+   "dur": 11.369,
+   "start": 16.025,
+   "parts": [
+    [
+     16.025,
+     17.2
+    ],
+    [
+     17.47,
+     17.943
+    ],
+    [
+     18.341,
+     19.09
+    ],
+    [
+     19.38,
+     19.663
+    ],
+    [
+     19.997,
+     21.846
+    ],
+    [
+     22.177,
+     22.477
+    ],
+    [
+     22.78,
+     23.583
+    ],
+    [
+     23.945,
+     24.238
+    ],
+    [
+     24.637,
+     26.741
+    ],
+    [
+     27.066,
+     27.394
+    ]
+   ]
+  },
+  {
+   "id": "s4",
+   "say": "Alors en deux mille vingt-trois, il part au Bayern. Le club qui gagne le championnat depuis onze ans d'affilée. Et cette saison-là… pour la première fois en onze ans, le Bayern ne gagne pas.",
+   "cap": "Alors en 2023, il part au Bayern. Le club qui gagne le championnat depuis 11 ans d'affilée. Et cette saison-là… pour la première fois en 11 ans, le Bayern ne gagne pas.",
+   "dur": 10.163,
+   "start": 27.814,
+   "parts": [
+    [
+     27.814,
+     33.008
+    ],
+    [
+     33.295,
+     34.14
+    ],
+    [
+     34.422,
+     36.222
+    ],
+    [
+     36.488,
+     37.977
+    ]
+   ]
+  },
+  {
+   "id": "s5",
+   "say": "Sur Internet, ça devient une blague mondiale : la malédiction Kane.",
+   "cap": "Sur Internet, ça devient une blague mondiale : la malédiction Kane.",
+   "dur": 3.998,
+   "start": 38.33,
+   "parts": [
+    [
+     38.33,
+     42.328
+    ]
+   ]
+  },
+  {
+   "id": "s6",
+   "say": "Mais Kane ne répond pas. Il marque. Encore, et encore. Et en mai deux mille vingt-cinq… enfin. Le premier trophée de sa carrière. Il a trente et un ans.",
+   "cap": "Mais Kane ne répond pas. Il marque. Encore, et encore. Et en mai 2025… enfin. Le premier trophée de sa carrière. Il a 31 ans.",
+   "dur": 9.496,
+   "start": 42.735,
+   "parts": [
+    [
+     42.735,
+     43.998
+    ],
+    [
+     44.346,
+     44.945
+    ],
+    [
+     45.257,
+     45.745
+    ],
+    [
+     46.057,
+     46.616
+    ],
+    [
+     46.991,
+     48.236
+    ],
+    [
+     48.582,
+     48.961
+    ],
+    [
+     49.266,
+     50.897
+    ],
+    [
+     51.3,
+     52.231
+    ]
+   ]
+  },
+  {
+   "id": "s7",
+   "say": "Et là, le barrage cède. Championnat, Coupe d'Allemagne, Supercoupe. Plus de soixante-dix buts en une saison. Seul Messi a déjà fait mieux.",
+   "cap": "Et là, le barrage cède. Championnat, Coupe d'Allemagne, Supercoupe. Plus de 70 buts en une saison. Seul Messi a déjà fait mieux.",
+   "dur": 7.7,
+   "start": 52.571,
+   "parts": [
+    [
+     52.571,
+     54.074
+    ],
+    [
+     54.361,
+     60.271
+    ]
+   ]
+  },
+  {
+   "id": "s8",
+   "say": "Et hier soir, le Ballon d'Or. Devant Mbappé. Devant Lamine Yamal. Le premier Anglais depuis vingt-cinq ans.",
+   "cap": "Et hier soir, le Ballon d'Or. Devant Mbappé. Devant Lamine Yamal. Le premier Anglais depuis 25 ans.",
+   "dur": 6.317,
+   "start": 60.593,
+   "parts": [
+    [
+     60.593,
+     61.324
+    ],
+    [
+     61.594,
+     62.346
+    ],
+    [
+     62.702,
+     64.694
+    ],
+    [
+     64.964,
+     66.91
+    ]
+   ]
+  },
+  {
+   "id": "s9",
+   "say": "La cérémonie avait lieu… à Londres. La ville où il n'avait jamais rien gagné. Et sur scène, il a dit merci… à Tottenham.",
+   "cap": "La cérémonie avait lieu… à Londres. La ville où il n'avait jamais rien gagné. Et sur scène, il a dit merci… à Tottenham.",
+   "dur": 7.13,
+   "start": 67.205,
+   "parts": [
+    [
+     67.205,
+     71.404
+    ],
+    [
+     71.739,
+     73.425
+    ],
+    [
+     73.705,
+     74.335
+    ]
+   ]
+  },
+  {
+   "id": "s10",
+   "say": "Il lui a fallu quatorze ans pour gagner son premier trophée. Et dix-sept mois, pour gagner le plus grand.",
+   "cap": "Il lui a fallu 14 ans pour gagner son premier trophée. Et 17 mois, pour gagner le plus grand.",
+   "dur": 4.808,
+   "start": 74.744,
+   "parts": [
+    [
+     74.744,
+     77.361
+    ],
+    [
+     77.638,
+     79.552
+    ]
+   ]
+  },
+  {
+   "id": "s11",
+   "say": "Alors, Ballon d'Or mérité… ou c'était l'année de Mbappé ? Dis-le en commentaire.",
+   "cap": "Alors, Ballon d'Or mérité… ou c'était l'année de Mbappé ? Dis-le en commentaire.",
+   "dur": 4.777,
+   "start": 79.863,
+   "parts": [
+    [
+     79.863,
+     81.518
+    ],
+    [
+     81.769,
+     83.248
+    ],
+    [
+     83.529,
+     84.64
+    ]
+   ]
+  }
+ ]
+}
